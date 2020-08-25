@@ -1,0 +1,36 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button fxShow="true" fxHide.gt-sm="true" (click)="sidenav.toggle()">
+    <mat-icon>
+      list
+    </mat-icon>
+  </button>
+  <h1 fxShow="true" fxHide.lt-sm="true">HOTA Lobby</h1>
+  <div fxShow="true" fxHide.lt-md="true">
+    <a mat-button>Leaderboard</a>
+    <a mat-button>Matches</a>
+    <a mat-button>News</a>
+    <a mat-button>Profile</a>
+  </div>
+  <span class="search-spacer"></span>
+  <mat-form-field floatLabel="never">
+    <mat-label>Search</mat-label>
+    <input matInput>
+  </mat-form-field>
+  <button mat-icon-button>
+    <mat-icon>
+      search
+    </mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-sidenav-container fxFlexFill>
+  <mat-sidenav #sidenav fxLayout="column">
+    <div fxLayout="column">
+      <a mat-button>Leaderboard</a>
+      <a mat-button>Matches</a>
+      <a mat-button>News</a>
+      <a mat-button>Profile</a>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>
+
