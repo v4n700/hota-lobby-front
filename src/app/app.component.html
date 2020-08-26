@@ -1,3 +1,11 @@
-<hota-header></hota-header>
-
-<router-outlet></router-outlet>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
+    <hota-sidenav-list (sidenavClose)="sidenav.close()"></hota-sidenav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <hota-header (sidenavToggle)="sidenav.toggle()"></hota-header>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

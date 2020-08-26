@@ -7,11 +7,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { HeaderComponent } from './shared/layout/header/header.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
+import { SidenavListComponent } from './shared/layout/sidenav-list/sidenav-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent
+    HeaderComponent,
+    LeaderboardComponent,
+    SidenavListComponent
   ],
   imports: [
     BrowserModule,
