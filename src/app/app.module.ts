@@ -9,6 +9,7 @@ import { HeaderComponent } from './shared/layout/header/header.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { SidenavListComponent } from './shared/layout/sidenav-list/sidenav-list.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { SidenavListComponent } from './shared/layout/sidenav-list/sidenav-list.
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

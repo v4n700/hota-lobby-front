@@ -1,28 +1,28 @@
 <mat-toolbar color="primary">
-  <div fxHide.gt-xs>
-    <button mat-icon-button (click)="onToggleSidenav()">
-      <mat-icon>menu</mat-icon>
-    </button>
-  </div>
-  <div fxHide.xs>
-    <h1>HOTA Lobby</h1>
-  </div>
-  <div fxHide.lt-md>
-    <a mat-button routerLink="/leaderboard">Leaderboard</a>
-    <a mat-button>Matches</a>
-    <a mat-button>News</a>
-    <a mat-button>Profile</a>
-  </div>
-  <div fxFlex fxLayoutAlign="end center">
-    <mat-form-field floatLabel="never">
-      <mat-label>Search</mat-label>
-      <input matInput>
-    </mat-form-field>
-    <button mat-icon-button fxAl>
-      <mat-icon>
-        search
-      </mat-icon>
-    </button>
-  </div>
+    <div fxHide.gt-xs>
+      <button mat-icon-button (click)="onToggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <div fxHide.xs>
+      <h1>HOTA Lobby</h1>
+    </div>
+    <div fxHide.lt-md class="nav-links">
+      <a mat-button routerLink="/leaderboard">Leaderboard</a>
+      <a mat-button>Matches</a>
+      <a mat-button>News</a>
+      <a mat-button>Profile</a>
+    </div>
+    <div fxFlex fxLayoutAlign="end center">
+      <mat-form-field floatLabel="never">
+        <mat-label>Search</mat-label>
+        <input matInput>
+      </mat-form-field>
+      <button mat-icon-button fxAl>
+        <mat-icon>
+          search
+        </mat-icon>
+      </button>
+    </div>
 </mat-toolbar>
 
