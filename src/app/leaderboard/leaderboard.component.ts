@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { MatPaginator } from '@angular/material/paginator';
+
+import { LeaderboardService } from '../core/services/leaderboard.service';
 
 @Component({
   selector: 'hota-leaderboard',
@@ -12,44 +13,36 @@ export class LeaderboardComponent implements OnInit {
   players: any[];
   loading = true;
   dataSource = new MatTableDataSource<any>();
-  private url = 'https://hota-lobby-test-api.herokuapp.com/api/players?';
   title = 'Leaderboard';
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private http: HttpClient) { }
+  constructor(private leaderboardService: LeaderboardService) { }
 
   ngOnInit(): void {
-    this.getData('0', '25');
+    this.getData(0, 25);
   }
 
   getData(offset, limit): void {
-    let params = new HttpParams();
-    params = params.set('offset', offset);
-    params = params.set('limit', limit);
-
-    this.http.get(this.url + params.toString())
-      .subscribe((response: any) => {
+    this.leaderboardService.getPlayers(offset, limit)
+      .subscribe((data) => {
         this.loading = false;
-        this.players = response;
+        this.players = data.body;
+        this.players.length = data.headers.get('X-Total-Count');
         this.dataSource = new MatTableDataSource<any>(this.players);
         this.dataSource.paginator = this.paginator;
-        console.log(response.headers.get('X-Total-Count').toString());
       });
   }
 
-  getNextData(currentSize, offset, limit): void {
-    let params = new HttpParams();
-    params = params.set('offset', offset);
-    params = params.set('limit', limit);
-
-    this.http.get(this.url + params.toString())
-      .subscribe((response: any) => {
-
+  getNextData(currentOffset, limit): void {
+    this.leaderboardService.getPlayers(currentOffset, limit)
+      .subscribe((data) => {
         this.loading = false;
 
-        this.players.length = currentSize;
-        this.players.push(...response);
+        this.players.length = currentOffset;
+        this.players.push(...data.body);
+        this.players.length = data.headers.get('X-Total-Count');
+
         this.dataSource = new MatTableDataSource<any>(this.players);
         this.dataSource._updateChangeSubscription();
 
@@ -63,8 +56,8 @@ export class LeaderboardComponent implements OnInit {
     const pageIndex = event.pageIndex;
     const pageSize = event.pageSize;
 
-    const previousSize = pageSize * pageIndex;
+    const currentOffset = pageSize * pageIndex;
 
-    this.getNextData(previousSize, (pageIndex).toString(), pageSize.toString());
+    this.getNextData(currentOffset, pageSize.toString());
   }
 }
