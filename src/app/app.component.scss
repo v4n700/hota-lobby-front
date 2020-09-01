@@ -1,7 +1,9 @@
-mat-sidenav-container, mat-sidenav-content, mat-sidenav {
+main {
+  margin-top: 64px;
   height: 100%;
 }
 
-mat-sidenav {
-  width: 250px;
+.header {
+  position: fixed;
+  width: 100%;
 }

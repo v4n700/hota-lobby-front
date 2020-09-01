@@ -1,9 +1,9 @@
-<mat-sidenav-container>
+<mat-sidenav-container fxFlexFill>
   <mat-sidenav #sidenav>
     <hota-sidenav-list (sidenavClose)="sidenav.close()"></hota-sidenav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <hota-header (sidenavToggle)="sidenav.toggle()"></hota-header>
+    <hota-header (sidenavToggle)="sidenav.toggle()" class="header mat-elevation-z5"></hota-header>
     <main>
       <router-outlet></router-outlet>
     </main>
