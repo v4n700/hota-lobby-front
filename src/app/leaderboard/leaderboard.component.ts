@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 
-import { LeaderboardService } from '../core/services/leaderboard.service';
+import { PlayersService } from '../core/services/players.service';
 
 @Component({
   selector: 'hota-leaderboard',
@@ -17,14 +17,14 @@ export class LeaderboardComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private leaderboardService: LeaderboardService) { }
+  constructor(private playersService: PlayersService) { }
 
   ngOnInit(): void {
     this.getData(0, 25);
   }
 
   getData(offset, limit): void {
-    this.leaderboardService.getPlayers(offset, limit)
+    this.playersService.getPlayers(offset, limit)
       .subscribe((data) => {
         this.loading = false;
         this.players = data.body;
@@ -35,7 +35,7 @@ export class LeaderboardComponent implements OnInit {
   }
 
   getNextData(currentOffset, limit): void {
-    this.leaderboardService.getPlayers(currentOffset, limit)
+    this.playersService.getPlayers(currentOffset, limit)
       .subscribe((data) => {
         this.loading = false;
 

@@ -2,15 +2,15 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {
-  LeaderboardService
-} from './services/leaderboard.service';
+  PlayersService
+} from './services/players.service';
 
 @NgModule({
   imports: [
     CommonModule
   ],
   providers: [
-    LeaderboardService
+    PlayersService
   ],
   declarations: []
 })

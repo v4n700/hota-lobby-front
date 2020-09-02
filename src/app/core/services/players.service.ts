@@ -3,10 +3,11 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { ApiService } from './api.service';
+import {Player} from '../models/player.model';
 
 
 @Injectable()
-export class LeaderboardService extends ApiService{
+export class PlayersService extends ApiService{
   constructor(public http: HttpClient) {
     super (http);
   }
@@ -15,6 +16,10 @@ export class LeaderboardService extends ApiService{
     let params = new HttpParams();
     params = params.set('offset', offset);
     params = params.set('limit', limit);
-    return this.get('/players', params);
+    return this.getFullResponse('/players', params);
+  }
+
+  getPlayer(id): Observable<Player> {
+    return this.get('/players/' + id);
   }
 }

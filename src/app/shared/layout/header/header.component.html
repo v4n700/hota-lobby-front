@@ -8,17 +8,17 @@
       <h1>HOTA Lobby</h1>
     </div>
     <div fxHide.lt-md class="nav-links">
-      <a mat-button routerLink="/leaderboard">Leaderboard</a>
-      <a mat-button>Matches</a>
-      <a mat-button>News</a>
-      <a mat-button>Profile</a>
+      <a mat-button routerLink="/leaderboard" routerLinkActive="mat-accent">Leaderboard</a>
+      <a mat-button [disabled]="true">Matches</a>
+      <a mat-button [disabled]="true">News</a>
+      <a mat-button [disabled]="true">Profile</a>
     </div>
     <div fxFlex fxLayoutAlign="end center">
       <mat-form-field floatLabel="never">
-        <mat-label>Search</mat-label>
+        <mat-label>Search player</mat-label>
         <input matInput>
       </mat-form-field>
-      <button mat-icon-button fxAl>
+      <button mat-icon-button>
         <mat-icon>
           search
         </mat-icon>

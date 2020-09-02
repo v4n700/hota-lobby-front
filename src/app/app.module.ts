@@ -11,13 +11,15 @@ import { MaterialModule } from './material/material.module';
 import { SidenavListComponent } from './shared/layout/sidenav-list/sidenav-list.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { HeaderComponent } from './shared/layout/header/header.component';
+import { PlayerProfileComponent } from './player-profile/player-profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     LeaderboardComponent,
-    SidenavListComponent
+    SidenavListComponent,
+    PlayerProfileComponent
   ],
   imports: [
     BrowserModule,

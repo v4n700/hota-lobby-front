@@ -1,0 +1,13 @@
+<div>
+  <div *ngIf="loading;else page">
+    <mat-spinner class="center"></mat-spinner>
+  </div>
+  
+  <ng-template #page>
+    <p>{{player.name}}</p>
+    <p>{{player.rating}}</p>
+    <p>{{player.reputation}}</p>
+    <p>{{player.last_seen_at}}</p>
+    <p>{{player.registered_at}}</p>
+  </ng-template>
+</div>

@@ -17,8 +17,13 @@ export class ApiService {
     return environment.api_url + path;
   }
 
-  public get(url: string = '', httpParams: HttpParams = new HttpParams()): Observable<any> {
+  public getFullResponse(url: string = '', httpParams: HttpParams = new HttpParams()): Observable<any> {
     return this.http.get(this.getUrl(url), {observe : 'response', params: httpParams})
+      .pipe(catchError(this.formatErrors));
+  }
+
+  public get(url: string = '', httpParams: HttpParams = new HttpParams()): Observable<any> {
+    return this.http.get(this.getUrl(url), {params: httpParams})
       .pipe(catchError(this.formatErrors));
   }
 }
