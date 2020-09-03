@@ -1,13 +1,18 @@
 <div>
-  <div *ngIf="loading;else page">
+  <div *ngIf="loading;else info">
     <mat-spinner class="center"></mat-spinner>
   </div>
-  
-  <ng-template #page>
-    <p>{{player.name}}</p>
-    <p>{{player.rating}}</p>
-    <p>{{player.reputation}}</p>
-    <p>{{player.last_seen_at}}</p>
-    <p>{{player.registered_at}}</p>
+
+  <ng-template #info>
+    <div class="player-info">
+      <h3>{{player.name}}</h3>
+      <p>Rating: {{player.rating}}</p>
+      <p>Reputation: {{player.reputation}}</p>
+      <p>Last online: {{player.last_seen_at}}</p>
+      <p>Registered: {{player.registered_at}}</p>
+    </div>
   </ng-template>
+  <highcharts-chart>
+
+  </highcharts-chart>
 </div>

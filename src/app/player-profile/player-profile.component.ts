@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { PlayersService } from '../core/services/players.service';
 import {ActivatedRoute} from '@angular/router';
 import { Player } from '../core/models/player.model';
-import {tap} from 'rxjs/operators';
 
 @Component({
   selector: 'hota-player-profile',
