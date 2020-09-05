@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -11,15 +12,14 @@ import { MaterialModule } from './material/material.module';
 import { SidenavListComponent } from './shared/layout/sidenav-list/sidenav-list.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { HeaderComponent } from './shared/layout/header/header.component';
-import { PlayerProfileComponent } from './player-profile/player-profile.component';
+import { ProfileModule } from './profile-page/profile.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     LeaderboardComponent,
-    SidenavListComponent,
-    PlayerProfileComponent
+    SidenavListComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +28,9 @@ import { PlayerProfileComponent } from './player-profile/player-profile.componen
     BrowserAnimationsModule,
     MaterialModule,
     FlexLayoutModule,
-    HttpClientModule
+    HttpClientModule,
+    ProfileModule,
+    HighchartsChartModule
   ],
   providers: [],
   bootstrap: [AppComponent]

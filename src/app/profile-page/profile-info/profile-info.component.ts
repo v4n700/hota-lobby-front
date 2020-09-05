@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { PlayersService } from '../core/services/players.service';
-import {ActivatedRoute} from '@angular/router';
-import { Player } from '../core/models/player.model';
+import { Player } from '../../core/models/player.model';
+import { ActivatedRoute } from '@angular/router';
+import { PlayersService } from '../../core/services/players.service';
 
 @Component({
-  selector: 'hota-player-profile',
-  templateUrl: './player-profile.component.html',
-  styleUrls: ['./player-profile.component.scss']
+  selector: 'hota-profile-info',
+  templateUrl: './profile-info.component.html',
+  styleUrls: ['./profile-info.component.scss']
 })
-export class PlayerProfileComponent implements OnInit {
+export class ProfileInfoComponent implements OnInit {
   id: string;
   player: Player;
   loading = true;
@@ -28,6 +28,7 @@ export class PlayerProfileComponent implements OnInit {
       .subscribe((playerData: Player) => {
         this.player = playerData;
         this.loading = false;
-    });
+      });
   }
+
 }
