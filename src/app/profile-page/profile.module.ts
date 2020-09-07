@@ -6,17 +6,23 @@ import { ProfileInfoComponent } from './profile-info/profile-info.component';
 import { MaterialModule } from '../material/material.module';
 import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { ProfileDashboardChartComponent } from './profile-dashboard/profile-dashboard-chart/profile-dashboard-chart.component';
+import {FlexModule} from '@angular/flex-layout';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     MaterialModule,
-    HighchartsChartModule
+    HighchartsChartModule,
+    FlexModule,
+    ReactiveFormsModule
   ],
   declarations: [
     ProfileComponent,
     ProfileInfoComponent,
-    ProfileDashboardComponent
+    ProfileDashboardComponent,
+    ProfileDashboardChartComponent
   ],
   providers: []
 })

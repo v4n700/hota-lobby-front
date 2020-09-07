@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { ApiService } from './api.service';
-import {Player} from '../models/player.model';
+import { Player } from '../models/player.model';
 
 
 @Injectable()
@@ -21,5 +21,9 @@ export class PlayersService extends ApiService{
 
   getPlayer(id): Observable<Player> {
     return this.get('/players/' + id);
+  }
+
+  getPlayerStatistics(id, stats): Observable<any> {
+    return this.get('/players/' + id + '/' + stats);
   }
 }

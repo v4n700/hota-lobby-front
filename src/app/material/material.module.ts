@@ -9,6 +9,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatMenuModule } from '@angular/material/menu';
 
 const material = [
   MatToolbarModule,
@@ -20,7 +23,10 @@ const material = [
   MatListModule,
   MatTableModule,
   MatPaginatorModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatNativeDateModule,
+  MatDatepickerModule,
+  MatMenuModule
 ];
 
 @NgModule({

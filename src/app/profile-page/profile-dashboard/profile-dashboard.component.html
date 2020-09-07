@@ -1,12 +1,20 @@
-<highcharts-chart
-  [Highcharts]="Highcharts"
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <div>
+      <mat-form-field floatLabel="never">
+        <mat-date-range-input fxFlex [formGroup]="dateIntervalFormGroup" [rangePicker]="picker">
+          <input matStartDate formControlName="start" placeholder="Start date">
+          <input matEndDate formControlName="end" placeholder="End date">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker fxLayoutAlign="end" #picker></mat-date-range-picker>
+      </mat-form-field>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+<ng-container>
+  <hota-profile-dashboard-chart *ngIf="chartsNumber > 0" [dateRange]="dateIntervalFormGroup.value"></hota-profile-dashboard-chart>
+  <hota-profile-dashboard-chart *ngIf="reputations" [dateRange]="dateIntervalFormGroup.value"></hota-profile-dashboard-chart>
+  <hota-profile-dashboard-chart *ngIf="hours" [dateRange]="dateIntervalFormGroup.value"></hota-profile-dashboard-chart>
+</ng-container>
 
-  [constructorType]="chartConstructor"
-  [options]="chartOptions"
-
-  [(update)]="updateFlag"
-  [oneToOne]="oneToOneFlag"
-  [runOutsideAngular]="runOutsideAngular"
-
-  style="width: 100%; height: 400px; display: block;"
-></highcharts-chart>
