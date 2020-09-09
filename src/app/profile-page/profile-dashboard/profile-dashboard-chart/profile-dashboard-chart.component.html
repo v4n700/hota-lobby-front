@@ -9,8 +9,15 @@
     </mat-menu>
     <button mat-button [matMenuTriggerFor]="chartTypeMenu">Chart type</button>
     <mat-menu #chartTypeMenu="matMenu">
-      <button mat-menu-item (click)="switchDisplayMode('line')">Line</button>
-      <button mat-menu-item (click)="switchDisplayMode('bar')">Bar</button>
+      <button mat-menu-item (click)="switchSeriesDisplayMode('line')">Line</button>
+      <button mat-menu-item (click)="switchSeriesDisplayMode('bar')">Bar</button>
+    </mat-menu>
+    <button mat-button [matMenuTriggerFor]="seriesColorMenu">Series color</button>
+    <mat-menu #seriesColorMenu="matMenu">
+      <button mat-menu-item (click)="switchSeriesColor($event)">Primary</button>
+      <button mat-menu-item (click)="switchSeriesColor($event)">Crimson</button>
+      <button mat-menu-item (click)="switchSeriesColor($event)">Blueviolet</button>
+      <button mat-menu-item (click)="switchSeriesColor($event)">Gold</button>
     </mat-menu>
   </div>
 

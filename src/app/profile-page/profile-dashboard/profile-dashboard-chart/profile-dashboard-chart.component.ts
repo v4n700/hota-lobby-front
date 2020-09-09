@@ -27,6 +27,7 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
   public dateRange: {start: Date, end: Date};
 
   id: string;
+  public rawPlayerData = [];
   public playerStatsData: number[] = [];
   public timeStamps: string[] = [];
 
@@ -47,10 +48,21 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
   Highcharts: typeof Highcharts = Highcharts;
   public chartOptions;
 
-  public switchDisplayMode(type: string): void {
+  public switchSeriesDisplayMode(type: string): void {
     if (this.chartOptions.chart.type !== type)
     {
       this.chartOptions.chart.type = type;
+    }
+
+    this.updateChartFlag = true;
+  }
+
+  public switchSeriesColor({ target }): void {
+    if (target.textContent === 'Primary')
+    {
+      this.chartOptions.series.map((data: ISeries) => (data.color = '#3f51b5'));
+    } else {
+      this.chartOptions.series.map((data: ISeries) => (data.color = target.textContent));
     }
 
     this.updateChartFlag = true;
@@ -70,7 +82,10 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
 
     if (this.dateRange.end != null)
     {
-      filteredData.filter(data => data.time <= this.dateRange.end.toISOString());
+      let dateEnd = new Date(this.dateRange.end);
+      dateEnd.setDate(this.dateRange.end.getDate() + 1);
+
+      filteredData = filteredData.filter(data => data.time <= dateEnd.toISOString());
     }
 
     switch (statsName) {
@@ -85,28 +100,30 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
         break;
     }
     this.timeStamps = filteredData.map(({time}) => this.formatDate(time));
-    this.Update();
   }
 
   public getPlayerStatistics(id, stats): void {
     this.playersService.getPlayerStatistics(id, stats)
       .subscribe((playerStats) => {
+        this.rawPlayerData = playerStats;
         this.getCleanChartData(playerStats, stats);
+        this.Update();
       });
   }
 
   public setStatisticsMode({ target }): void {
+    console.log(target.textContent);
     switch (target.textContent) {
       case 'Rating':
-        this.chartData[0].name = 'Rating statistics';
+        this.chartData[0].name = 'Rating';
         this.getPlayerStatistics(this.id, 'ratings');
         break;
       case 'Reputation':
-        this.chartData[0].name = 'Rating statistics';
+        this.chartData[0].name = 'Reputation';
         this.getPlayerStatistics(this.id, 'reputations');
         break;
       case 'Hours':
-        this.chartData[0].name = 'Rating statistics';
+        this.chartData[0].name = 'Hours';
         this.getPlayerStatistics(this.id, 'hours');
         break;
     }
@@ -115,13 +132,13 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
-    this.chartData[0].name = 'Rating statistics';
+    this.chartData[0].name = 'Rating';
     this.getPlayerStatistics(this.id, 'ratings');
     this.Update();
   }
 
   private Update(): void {
-    this.chartData.map((val) => (val.data = this.playerStatsData));
+    this.chartData.map((value) => (value.data = this.playerStatsData));
     this.chartOptions = {
       title: {text: 'Player statistics'},
       chart: {
@@ -144,6 +161,7 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
   }
 
   ngOnChanges(): void {
+    this.getCleanChartData(this.rawPlayerData, 'ratings');
     this.Update();
   }
 
