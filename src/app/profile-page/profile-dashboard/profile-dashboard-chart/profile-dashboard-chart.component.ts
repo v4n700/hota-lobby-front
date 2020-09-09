@@ -50,7 +50,7 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
     return date.split('T')[0];
   }
 
-  public getTruncatedPlayerStats(playerData): void{
+  public getTruncatedPlayerStats(playerData, statsName): void{
     let filteredData = playerData;
 
     if (this.dateRange.start != null)
@@ -62,15 +62,27 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
     {
       filteredData.filter(data => data.time <= this.dateRange.end.toISOString());
     }
-    
-    this.playerStatsData = filteredData.map((obj) => obj.rating);
-    filteredData.map(({time}) => this.formatDate(time));
+
+    console.log(statsName);
+    switch (statsName) {
+      case 'ratings':
+        this.playerStatsData = filteredData.map((obj) => obj.rating);
+        break;
+      case 'reputations':
+        this.playerStatsData = filteredData.map((obj) => obj.reputation);
+        break;
+      case 'hours':
+        this.playerStatsData = filteredData.map((obj) => obj.played);
+        break;
+    }
+    this.timeStamps = filteredData.map(({time}) => this.formatDate(time));
+    this.Update();
   }
 
   public getPlayerStatistics(id, stats): void {
     this.playersService.getPlayerStatistics(id, stats)
       .subscribe((playerStats) => {
-        this.getTruncatedPlayerStats(playerStats);
+        this.getTruncatedPlayerStats(playerStats, stats);
       });
   }
 
@@ -80,16 +92,26 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
         this.chartData[0].name = 'Rating statistics';
         this.getPlayerStatistics(this.id, 'ratings');
         break;
+      case 'Reputation':
+        this.chartData[0].name = 'Rating statistics';
+        this.getPlayerStatistics(this.id, 'reputations');
+        break;
+      case 'Hours':
+        this.chartData[0].name = 'Rating statistics';
+        this.getPlayerStatistics(this.id, 'hours');
+        break;
     }
-    console.log('hui');
     this.updateChartFlag = true;
   }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
+    this.chartData[0].name = 'Rating statistics';
+    this.getPlayerStatistics(this.id, 'ratings');
+    this.Update();
   }
 
-  ngOnChanges(): void {
+  private Update(): void {
     this.chartData.map((val) => (val.data = this.playerStatsData));
     this.chartOptions = {
       title: {text: 'Player statistics'},
@@ -111,5 +133,7 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
 
     this.updateChartFlag = true;
   }
-
+  ngOnChanges(): void {
+    this.Update();
+  }
 }

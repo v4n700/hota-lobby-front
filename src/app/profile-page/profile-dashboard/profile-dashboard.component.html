@@ -1,6 +1,15 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
     <div>
+      <button mat-button [matMenuTriggerFor]="chartsAmountMenu">Charts amount</button>
+      <mat-menu #chartsAmountMenu="matMenu">
+        <button mat-menu-item (click)="chartsAmount = 1">1</button>
+        <button mat-menu-item (click)="chartsAmount = 2">2</button>
+        <button mat-menu-item (click)="chartsAmount = 3">3</button>
+        <button mat-menu-item (click)="chartsAmount = 4">4</button>
+      </mat-menu>
+    </div>
+    <div>
       <mat-form-field floatLabel="never">
         <mat-date-range-input fxFlex [formGroup]="dateIntervalFormGroup" [rangePicker]="picker">
           <input matStartDate formControlName="start" placeholder="Start date">
@@ -13,8 +22,8 @@
   </mat-toolbar-row>
 </mat-toolbar>
 <ng-container>
-  <hota-profile-dashboard-chart *ngIf="chartsNumber > 0" [dateRange]="dateIntervalFormGroup.value"></hota-profile-dashboard-chart>
-  <hota-profile-dashboard-chart *ngIf="reputations" [dateRange]="dateIntervalFormGroup.value"></hota-profile-dashboard-chart>
-  <hota-profile-dashboard-chart *ngIf="hours" [dateRange]="dateIntervalFormGroup.value"></hota-profile-dashboard-chart>
+  <hota-profile-dashboard-chart *ngIf="chartsAmount > 0" [dateRange]="dateIntervalFormGroup.value"></hota-profile-dashboard-chart>
+  <hota-profile-dashboard-chart *ngIf="chartsAmount > 1" [dateRange]="dateIntervalFormGroup.value"></hota-profile-dashboard-chart>
+  <hota-profile-dashboard-chart *ngIf="chartsAmount > 2" [dateRange]="dateIntervalFormGroup.value"></hota-profile-dashboard-chart>
 </ng-container>
 

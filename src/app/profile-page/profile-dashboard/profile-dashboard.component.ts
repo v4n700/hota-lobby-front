@@ -8,17 +8,11 @@ import {MatDateRangePickerInput} from '@angular/material/datepicker/date-range-p
   styleUrls: ['./profile-dashboard.component.scss']
 })
 export class ProfileDashboardComponent {
-  public chartsNumber = 1;
-  public ratings = true;
-  public reputations = false;
-  public hours = false;
-  public towers = false;
-
-  currentDate = new Date();
+  public chartsAmount = 1;
 
   dateIntervalFormGroup = new FormGroup({
-    start: new FormControl(this.currentDate),
-    end: new FormControl(new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, this.currentDate.getDate()))
+    start: new FormControl(null),
+    end: new FormControl(null)
   });
 
   constructor() {}
