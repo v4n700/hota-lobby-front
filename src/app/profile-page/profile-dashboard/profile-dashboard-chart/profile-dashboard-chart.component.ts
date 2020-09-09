@@ -51,10 +51,20 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
   }
 
   public getTruncatedPlayerStats(playerData): void{
-    const filteredData = playerData
-      .filter(data => data.time >= this.dateRange.start.toISOString() && data.time <= this.dateRange.end.toISOString());
-    this.playerStatsData = filteredData.map(({rating}) => rating);
-    this.timeStamps = filteredData.map(({time}) => this.formatDate(time));
+    let filteredData = playerData;
+
+    if (this.dateRange.start != null)
+    {
+      filteredData = playerData.filter(data => data.time >= this.dateRange.start.toISOString());
+    }
+
+    if (this.dateRange.end != null)
+    {
+      filteredData.filter(data => data.time <= this.dateRange.end.toISOString());
+    }
+    
+    this.playerStatsData = filteredData.map((obj) => obj.rating);
+    filteredData.map(({time}) => this.formatDate(time));
   }
 
   public getPlayerStatistics(id, stats): void {
