@@ -25,16 +25,17 @@ Highcharts.setOptions({
 export class ProfileDashboardChartComponent implements OnChanges, OnInit {
   @Input()
   public dateRange: {start: Date, end: Date};
-  public timeStamps: string[] = [];
+
   id: string;
+  public playerStatsData: number[] = [];
+  public timeStamps: string[] = [];
+
   constructor(
     private playersService: PlayersService,
     private route: ActivatedRoute,
   ) { }
 
-  public playerStatsData: number[] = [];
   public updateChartFlag = false;
-  public currentChartType = 'line';
   public chartData: ISeries[] = [
     {
       name: 'Rating',
@@ -46,11 +47,20 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
   Highcharts: typeof Highcharts = Highcharts;
   public chartOptions;
 
+  public switchDisplayMode(type: string): void {
+    if (this.chartOptions.chart.type !== type)
+    {
+      this.chartOptions.chart.type = type;
+    }
+
+    this.updateChartFlag = true;
+  }
+
   public formatDate(date): string{
     return date.split('T')[0];
   }
 
-  public getTruncatedPlayerStats(playerData, statsName): void{
+  public getCleanChartData(playerData, statsName): void{
     let filteredData = playerData;
 
     if (this.dateRange.start != null)
@@ -63,7 +73,6 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
       filteredData.filter(data => data.time <= this.dateRange.end.toISOString());
     }
 
-    console.log(statsName);
     switch (statsName) {
       case 'ratings':
         this.playerStatsData = filteredData.map((obj) => obj.rating);
@@ -82,7 +91,7 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
   public getPlayerStatistics(id, stats): void {
     this.playersService.getPlayerStatistics(id, stats)
       .subscribe((playerStats) => {
-        this.getTruncatedPlayerStats(playerStats, stats);
+        this.getCleanChartData(playerStats, stats);
       });
   }
 
@@ -116,7 +125,7 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
     this.chartOptions = {
       title: {text: 'Player statistics'},
       chart: {
-        type: this.currentChartType
+        type: 'line'
       },
       xAxis: {
         type: 'datetime',
@@ -133,7 +142,12 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
 
     this.updateChartFlag = true;
   }
+
   ngOnChanges(): void {
     this.Update();
+  }
+
+  public combineStatistics(): void {
+
   }
 }
