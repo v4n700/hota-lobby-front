@@ -37,6 +37,7 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
   ) { }
 
   public updateChartFlag = false;
+  public currentChartType = 'line';
   public chartData: ISeries[] = [
     {
       name: 'Rating',
@@ -49,8 +50,9 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
   public chartOptions;
 
   public switchSeriesDisplayMode(type: string): void {
-    if (this.chartOptions.chart.type !== type)
+    if (this.currentChartType !== type)
     {
+      this.currentChartType = type;
       this.chartOptions.chart.type = type;
     }
 
@@ -142,7 +144,7 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
     this.chartOptions = {
       title: {text: 'Player statistics'},
       chart: {
-        type: 'line'
+        type: this.currentChartType
       },
       xAxis: {
         type: 'datetime',

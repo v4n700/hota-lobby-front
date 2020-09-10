@@ -1,3 +1,9 @@
 .nav-links {
   padding: 10px;
 }
+
+.header {
+  position: fixed;
+  z-index: 2;
+  width: 100%;
+}

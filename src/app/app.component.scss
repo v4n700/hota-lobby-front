@@ -7,7 +7,7 @@ main {
   padding: 10px;
 }
 
-.header {
-  position: fixed;
-  width: 100%;
+.content {
+  z-index: 1;
+  position: relative;
 }
