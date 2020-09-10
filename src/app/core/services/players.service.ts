@@ -16,14 +16,14 @@ export class PlayersService extends ApiService{
     let params = new HttpParams();
     params = params.set('offset', offset);
     params = params.set('limit', limit);
-    return this.getFullResponse('/players', params);
+    return this.getFullResponse(`/players`, params);
   }
 
   getPlayer(id): Observable<Player> {
-    return this.get('/players/' + id);
+    return this.get(`/players/${id}`);
   }
 
-  getPlayerStatistics(id, stats): Observable<any> {
-    return this.get('/players/' + id + '/' + stats);
+  getPlayerStatistics(id: string, stats): Observable<any> {
+    return this.get(`/players/${id}/${stats}`);
   }
 }

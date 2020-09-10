@@ -1,7 +1,8 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import {PlayersService} from '../../../core/services/players.service';
 import {ActivatedRoute} from '@angular/router';
+
+import {PlayersService} from '../../../core/services/players.service';
 
 export interface ISeries {
   name: string;
@@ -74,7 +75,7 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
     return date.split('T')[0];
   }
 
-  public getCleanChartData(playerData, statsName): void{
+  public getCleanChartData(playerData, statsName): number[]{
     let filteredData = playerData;
 
     if (this.dateRange.start != null)
@@ -84,37 +85,34 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
 
     if (this.dateRange.end != null)
     {
-      let dateEnd = new Date(this.dateRange.end);
+      const dateEnd = new Date(this.dateRange.end);
       dateEnd.setDate(this.dateRange.end.getDate() + 1);
 
       filteredData = filteredData.filter(data => data.time <= dateEnd.toISOString());
     }
 
+    this.timeStamps = filteredData.map(({time}) => this.formatDate(time));
+
     switch (statsName) {
       case 'ratings':
-        this.playerStatsData = filteredData.map((obj) => obj.rating);
-        break;
+        return filteredData.map((obj) => obj.rating);
       case 'reputations':
-        this.playerStatsData = filteredData.map((obj) => obj.reputation);
-        break;
+        return filteredData.map((obj) => obj.reputation);
       case 'hours':
-        this.playerStatsData = filteredData.map((obj) => obj.played);
-        break;
+        return filteredData.map((obj) => obj.played);
     }
-    this.timeStamps = filteredData.map(({time}) => this.formatDate(time));
   }
 
-  public getPlayerStatistics(id, stats): void {
+  public getPlayerStatistics(id, stats): any {
     this.playersService.getPlayerStatistics(id, stats)
       .subscribe((playerStats) => {
         this.rawPlayerData = playerStats;
-        this.getCleanChartData(playerStats, stats);
+        this.playerStatsData = this.getCleanChartData(this.rawPlayerData, 'ratings');
         this.Update();
       });
   }
 
   public setStatisticsMode({ target }): void {
-    console.log(target.textContent);
     switch (target.textContent) {
       case 'Rating':
         this.chartData[0].name = 'Rating';
@@ -136,7 +134,6 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
     this.id = this.route.snapshot.params.id;
     this.chartData[0].name = 'Rating';
     this.getPlayerStatistics(this.id, 'ratings');
-    this.Update();
   }
 
   private Update(): void {
