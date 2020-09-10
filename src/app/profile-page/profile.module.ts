@@ -7,7 +7,7 @@ import { MaterialModule } from '../material/material.module';
 import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { ProfileDashboardChartComponent } from './profile-dashboard/profile-dashboard-chart/profile-dashboard-chart.component';
-import {FlexModule} from '@angular/flex-layout';
+import {FlexLayoutModule, FlexModule} from '@angular/flex-layout';
 import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
@@ -16,7 +16,8 @@ import {ReactiveFormsModule} from '@angular/forms';
     MaterialModule,
     HighchartsChartModule,
     FlexModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FlexLayoutModule
   ],
   declarations: [
     ProfileComponent,

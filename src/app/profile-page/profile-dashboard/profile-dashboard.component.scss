@@ -6,6 +6,24 @@ mat-datepicker-toggle {
   color: white;
 }
 
-mat-form-field {
-  width: 265px;
+.date-input {
+  width: 110px;
 }
+
+.side {
+  width: 10%;
+}
+.flexSpaceBetween {
+  justify-content: space-between;
+}
+
+.datepicker-container {
+  border-radius: 5px;
+  border: 1px solid white;
+  align-items: center;
+}
+
+.datepicker {
+  margin-left: 10px;
+}
+

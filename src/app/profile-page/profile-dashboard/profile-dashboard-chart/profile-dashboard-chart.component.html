@@ -1,18 +1,18 @@
-<div class="container">
+<div class="container mat-elevation-z5">
   <div>
-    <button mat-button [matMenuTriggerFor]="statisticsMenu">Select statistics</button>
+    <button mat-button [matMenuTriggerFor]="statisticsMenu" class="menu-button">Select statistics</button>
     <mat-menu #statisticsMenu="matMenu">
       <button mat-menu-item (click)="setStatisticsMode($event)">Rating</button>
       <button mat-menu-item (click)="setStatisticsMode($event)">Reputation</button>
       <button mat-menu-item (click)="setStatisticsMode($event)">Hours</button>
       <button mat-menu-item>Combined</button>
     </mat-menu>
-    <button mat-button [matMenuTriggerFor]="chartTypeMenu">Chart type</button>
+    <button mat-button [matMenuTriggerFor]="chartTypeMenu" class="menu-button">Chart type</button>
     <mat-menu #chartTypeMenu="matMenu">
       <button mat-menu-item (click)="switchSeriesDisplayMode('line')">Line</button>
       <button mat-menu-item (click)="switchSeriesDisplayMode('bar')">Bar</button>
     </mat-menu>
-    <button mat-button [matMenuTriggerFor]="seriesColorMenu">Series color</button>
+    <button mat-button [matMenuTriggerFor]="seriesColorMenu" class="menu-button">Series color</button>
     <mat-menu #seriesColorMenu="matMenu">
       <button mat-menu-item (click)="switchSeriesColor($event)">Primary</button>
       <button mat-menu-item (click)="switchSeriesColor($event)">Crimson</button>
@@ -26,6 +26,6 @@
     [options]="chartOptions"
     [(update)]="updateChartFlag"
     [oneToOne]=true
-    style="display: block;"
+    style="display: block; padding: 2px"
   ></highcharts-chart>
 </div>
