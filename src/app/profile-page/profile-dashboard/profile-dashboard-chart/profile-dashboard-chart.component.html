@@ -5,7 +5,7 @@
       <button mat-menu-item (click)="setStatisticsMode($event)">Rating</button>
       <button mat-menu-item (click)="setStatisticsMode($event)">Reputation</button>
       <button mat-menu-item (click)="setStatisticsMode($event)">Hours</button>
-      <button mat-menu-item>Combined</button>
+      <button mat-menu-item (click)="setStatisticsMode($event)">Combined</button>
     </mat-menu>
     <button mat-button [matMenuTriggerFor]="chartTypeMenu" class="menu-button">Chart type</button>
     <mat-menu #chartTypeMenu="matMenu">

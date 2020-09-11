@@ -107,7 +107,7 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
     this.playersService.getPlayerStatistics(id, stats)
       .subscribe((playerStats) => {
         this.rawPlayerData = playerStats;
-        this.playerStatsData = this.getCleanChartData(this.rawPlayerData, 'ratings');
+        this.playerStatsData = this.getCleanChartData(this.rawPlayerData, stats);
         this.Update();
       });
   }
