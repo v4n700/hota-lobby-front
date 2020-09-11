@@ -3,12 +3,8 @@ import * as Highcharts from 'highcharts';
 import {ActivatedRoute} from '@angular/router';
 
 import {PlayersService} from '../../../core/services/players.service';
-
-export interface ISeries {
-  name: string;
-  data?: number[];
-  color?: string;
-}
+import {forkJoin} from 'rxjs';
+import { Series } from '../../../core/models/series.model';
 
 Highcharts.setOptions({
   title: {
@@ -39,7 +35,7 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
 
   public updateChartFlag = false;
   public currentChartType = 'line';
-  public chartData: ISeries[] = [
+  public chartData: Series[] = [
     {
       name: 'Rating',
       data: this.playerStatsData,
@@ -63,9 +59,9 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
   public switchSeriesColor({ target }): void {
     if (target.textContent === 'Primary')
     {
-      this.chartOptions.series.map((data: ISeries) => (data.color = '#3f51b5'));
+      this.chartOptions.series.map((data: Series) => (data.color = '#3f51b5'));
     } else {
-      this.chartOptions.series.map((data: ISeries) => (data.color = target.textContent));
+      this.chartOptions.series.map((data: Series) => (data.color = target.textContent));
     }
 
     this.updateChartFlag = true;
@@ -126,6 +122,9 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
         this.chartData[0].name = 'Hours';
         this.getPlayerStatistics(this.id, 'hours');
         break;
+      case 'Combined':
+        this.getCombinedStatistics();
+        break;
     }
     this.updateChartFlag = true;
   }
@@ -160,11 +159,32 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
   }
 
   ngOnChanges(): void {
-    this.getCleanChartData(this.rawPlayerData, 'ratings');
+    this.playerStatsData = this.getCleanChartData(this.rawPlayerData, 'ratings');
     this.Update();
   }
 
-  public combineStatistics(): void {
+  public getCombinedStatistics(): void {
+    forkJoin({
+      stats1: this.playersService.getPlayerStatistics(this.id, 'hours'),
+      stats2: this.playersService.getPlayerStatistics(this.id, 'reputations'),
+    }).subscribe( data => {
+      this.combineStatistics(data);
+    });
+  }
 
+  public combineStatistics(data): void {
+    this.chartData.push(
+      {
+        name: 'hours',
+        data: this.getCleanChartData(data.stats1, 'hours'),
+        color: 'red'
+      },
+      {
+        name: 'reputations',
+        data: this.getCleanChartData(data.stats2, 'reputations'),
+        color: 'black'
+      });
+
+    this.updateChartFlag = true;
   }
 }
