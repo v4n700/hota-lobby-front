@@ -7,23 +7,22 @@ import { Player } from '../models/player.model';
 
 
 @Injectable()
-export class PlayersService extends ApiService{
-  constructor(public http: HttpClient) {
-    super (http);
+export class PlayersService {
+  constructor(private apiService: ApiService) {
   }
 
   getPlayers(offset, limit): Observable<any> {
     let params = new HttpParams();
     params = params.set('offset', offset);
     params = params.set('limit', limit);
-    return this.getFullResponse(`/players`, params);
+    return this.apiService.getFullResponse(`/players`, params);
   }
 
   getPlayer(id): Observable<Player> {
-    return this.get(`/players/${id}`);
+    return this.apiService.get(`/players/${id}`);
   }
 
   getPlayerStatistics(id: string, stats): Observable<any> {
-    return this.get(`/players/${id}/${stats}`);
+    return this.apiService.get(`/players/${id}/${stats}`);
   }
 }

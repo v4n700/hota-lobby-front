@@ -188,17 +188,17 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
       {
         name: 'Rating',
         data: this.getCleanChartData(data.stats1, 'ratings'),
-        color: 'red'
+        color: '#3f51b5'
       },
       {
         name: 'Reputation',
         data: this.getCleanChartData(data.stats2, 'reputations'),
-        color: 'yellow'
+        color: '#2e8c31'
       },
       {
         name: 'Hours',
         data: this.getCleanChartData(data.stats3, 'hours'),
-        color: 'black'
+        color: '#9c1446'
       });
 
     this.updateChartFlag = true;
