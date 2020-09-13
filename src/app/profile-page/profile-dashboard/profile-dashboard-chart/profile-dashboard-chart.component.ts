@@ -111,14 +111,17 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
   public setStatisticsMode({ target }): void {
     switch (target.textContent) {
       case 'Rating':
+        this.clearChartData();
         this.chartData[0].name = 'Rating';
         this.getPlayerStatistics(this.id, 'ratings');
         break;
       case 'Reputation':
+        this.clearChartData();
         this.chartData[0].name = 'Reputation';
         this.getPlayerStatistics(this.id, 'reputations');
         break;
       case 'Hours':
+        this.clearChartData();
         this.chartData[0].name = 'Hours';
         this.getPlayerStatistics(this.id, 'hours');
         break;
@@ -165,23 +168,36 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
 
   public getCombinedStatistics(): void {
     forkJoin({
-      stats1: this.playersService.getPlayerStatistics(this.id, 'hours'),
+      stats1: this.playersService.getPlayerStatistics(this.id, 'ratings'),
       stats2: this.playersService.getPlayerStatistics(this.id, 'reputations'),
+      stats3: this.playersService.getPlayerStatistics(this.id, 'hours')
     }).subscribe( data => {
       this.combineStatistics(data);
     });
   }
 
+  public clearChartData(): void {
+    while (this.chartData.length > 1) {
+      this.chartData.pop();
+    }
+  }
+
   public combineStatistics(data): void {
+    this.chartData.length = 0;
     this.chartData.push(
       {
-        name: 'hours',
-        data: this.getCleanChartData(data.stats1, 'hours'),
+        name: 'Rating',
+        data: this.getCleanChartData(data.stats1, 'ratings'),
         color: 'red'
       },
       {
-        name: 'reputations',
+        name: 'Reputation',
         data: this.getCleanChartData(data.stats2, 'reputations'),
+        color: 'yellow'
+      },
+      {
+        name: 'Hours',
+        data: this.getCleanChartData(data.stats3, 'hours'),
         color: 'black'
       });
 
