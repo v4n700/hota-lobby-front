@@ -5,8 +5,14 @@ import {Observable} from 'rxjs';
 import {PlayerStatisticsRatingWebMapper} from './player-statistics-rating-web-mapper';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
-import {flatMap, map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import {PlayerStatisticsRatingWebEntity} from './player-statistics-rating-web-entity';
+import {PlayerStatisticsHoursModel} from '../../../core/models/player-statistics-hours.model';
+import {PlayerStatisticsHoursWebEntity} from './player-statistics-hours-web-entity';
+import {PlayerStatisticsHoursWebMapper} from './player-statistics-hours-web-mapper';
+import {PlayerStatisticsReputationModel} from '../../../core/models/player-statistics-reputation.model';
+import {PlayerStatisticsReputationWebMapper} from './player-statistics-reputation-web-mapper';
+import {PlayerStatisticsReputationWebEntity} from './player-statistics-reputation-web-entity';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +20,8 @@ import {PlayerStatisticsRatingWebEntity} from './player-statistics-rating-web-en
 export class PlayerStatisticsWebRepository extends PlayerStatisticsRepository {
 
   playerRatingStatsMapper = new PlayerStatisticsRatingWebMapper();
+  playerHoursStatsMapper = new PlayerStatisticsHoursWebMapper();
+  playerReputationStatsMapper = new PlayerStatisticsReputationWebMapper();
 
   constructor(
     private http: HttpClient
@@ -25,5 +33,17 @@ export class PlayerStatisticsWebRepository extends PlayerStatisticsRepository {
     return this.http
       .get<PlayerStatisticsRatingWebEntity[]>(`${environment.api_url}/players/${id}/ratings`)
       .pipe(map(this.playerRatingStatsMapper.mapFrom));
+  }
+
+  getPlayerHoursStats(id: number): Observable<PlayerStatisticsHoursModel[]> {
+    return this.http
+      .get<PlayerStatisticsHoursWebEntity[]>(`${environment.api_url}/players/${id}/hours`)
+      .pipe(map(this.playerHoursStatsMapper.mapFrom));
+  }
+
+  getPlayerReputationStats(id: number): Observable<PlayerStatisticsReputationModel[]> {
+    return this.http
+      .get<PlayerStatisticsReputationWebEntity[]>(`${environment.api_url}/players/${id}/reputations`)
+      .pipe(map(this.playerReputationStatsMapper.mapFrom));
   }
 }

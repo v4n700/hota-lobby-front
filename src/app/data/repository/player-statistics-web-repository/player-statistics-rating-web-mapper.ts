@@ -4,10 +4,10 @@ import { PlayerStatisticsRatingModel } from '../../../core/models/player-statist
 
 export class PlayerStatisticsRatingWebMapper implements Mapper<PlayerStatisticsRatingWebEntity[], PlayerStatisticsRatingModel[]>{
   mapFrom(param: PlayerStatisticsRatingWebEntity[]): PlayerStatisticsRatingModel[] {
-    return param.map(item => { rating: item.rating; time: item.time });
+    return param.map(item => ({ rating: item.rating, time: item.time }) as PlayerStatisticsRatingModel);
   }
 
-  mapTo(param: PlayerStatisticsRatingModel[]): PlayerStatisticsRatingWebEntity {
+  mapTo(param: PlayerStatisticsRatingModel[]): PlayerStatisticsRatingWebEntity[] {
     return undefined;
   }
 }

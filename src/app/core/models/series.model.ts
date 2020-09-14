@@ -1,5 +1,4 @@
-export interface Series {
-  name: string;
-  data?: number[];
-  color?: string;
+export interface SeriesModel {
+  data: number[];
+  timeStamps: Date[];
 }

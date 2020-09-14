@@ -14,13 +14,6 @@ export class PlayerWebRepositoryMapper implements Mapper<PlayerWebEntity, Player
   }
 
   mapTo(param: PlayerModel): PlayerWebEntity {
-    return {
-      id: 0,
-      name: param.name,
-      rating: param.rating,
-      reputation: param.reputation,
-      last_seen_at: param.last_seen_at,
-      registered_at: param.registered_at
-    };
+    return undefined;
   }
 }

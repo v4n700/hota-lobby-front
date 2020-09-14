@@ -4,8 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 
 import {PlayersService} from '../../../core/services/players.service';
 import {forkJoin} from 'rxjs';
-import { Series } from '../../../core/models/series.model';
-import {GetPlayerStatisticsUsecase} from '../../../core/usecases/get-player-statistics.usecase';
+import {GetPlayerStatisticsRatingUsecase} from '../../../core/usecases/get-player-statistics-rating.usecase';
 
 Highcharts.setOptions({
   title: {
@@ -25,14 +24,13 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
   public dateRange: {start: Date, end: Date};
 
   id: string;
-  public rawPlayerData = [];
   public playerStatsData: number[] = [];
   public timeStamps: string[] = [];
 
   constructor(
     private playersService: PlayersService,
     private route: ActivatedRoute,
-    private getPlayerStatisticsUC: GetPlayerStatisticsUsecase
+    private getPlayerStatisticsUC: GetPlayerStatisticsRatingUsecase
   ) { }
 
   public updateChartFlag = false;
@@ -47,13 +45,6 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
 
   Highcharts: typeof Highcharts = Highcharts;
   public chartOptions;
-
-  public test(): void {
-    this.getPlayerStatisticsUC.execute(
-      222).subscribe((data) => {
-        console.log(data);
-    });
-  }
 
   public switchSeriesDisplayMode(type: string): void {
     if (this.currentChartType !== type) {
@@ -139,7 +130,6 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
-    this.test();
     this.chartData[0].name = 'Rating';
     this.getPlayerStatistics(this.id, 'ratings');
   }

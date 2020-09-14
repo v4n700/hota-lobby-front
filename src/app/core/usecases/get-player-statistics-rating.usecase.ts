@@ -8,11 +8,11 @@ import {PlayerStatisticsRatingModel} from '../models/player-statistics-rating.mo
 @Injectable({
   providedIn: 'root'
 })
-export class GetPlayerStatisticsUsecase implements UseCase<number, PlayerStatisticsRatingModel> {
+export class GetPlayerStatisticsRatingUsecase implements UseCase<number, PlayerStatisticsRatingModel[]> {
 
   constructor(private playerStatisticsRepository: PlayerStatisticsRepository) {}
 
-execute(params: number): Observable<PlayerStatisticsRatingModel> {
+execute(params: number): Observable<PlayerStatisticsRatingModel[]> {
   return this.playerStatisticsRepository.getPlayerRatingStats(params);
 }
 }
