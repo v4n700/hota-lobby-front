@@ -13,7 +13,7 @@ import {PlayerStatisticsRatingWebEntity} from './player-statistics-rating-web-en
 })
 export class PlayerStatisticsWebRepository extends PlayerStatisticsRepository {
 
-  playerRatingStatsMapper = PlayerStatisticsRatingWebMapper;
+  playerRatingStatsMapper = new PlayerStatisticsRatingWebMapper();
 
   constructor(
     private http: HttpClient
@@ -24,7 +24,6 @@ export class PlayerStatisticsWebRepository extends PlayerStatisticsRepository {
   getPlayerRatingStats(id: number): Observable<PlayerStatisticsRatingModel[]> {
     return this.http
       .get<PlayerStatisticsRatingWebEntity[]>(`${environment.api_url}/players/${id}/ratings`)
-      .pipe(flatMap((item) => item))
       .pipe(map(this.playerRatingStatsMapper.mapFrom));
   }
 }
