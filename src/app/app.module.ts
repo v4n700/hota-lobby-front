@@ -33,7 +33,7 @@ import {ApiService} from './core/services/api.service';
     ProfileModule,
     HighchartsChartModule
   ],
-  providers: [ApiService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

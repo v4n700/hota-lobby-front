@@ -26,6 +26,7 @@ export class LeaderboardComponent implements OnInit {
   getData(offset, limit): void {
     this.playersService.getPlayers(offset, limit)
       .subscribe((data) => {
+        console.log(data);
         this.loading = false;
         this.players = data.body;
         this.players.length = data.headers.get('X-Total-Count');

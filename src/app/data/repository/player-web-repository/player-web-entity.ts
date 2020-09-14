@@ -1,4 +1,5 @@
-export interface PlayerModel {
+export interface PlayerWebEntity {
+  id: number;
   name: string;
   rating: number;
   reputation: number;

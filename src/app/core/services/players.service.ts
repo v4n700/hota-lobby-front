@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { ApiService } from './api.service';
-import { Player } from '../models/player.model';
+import { PlayerModel } from '../models/player.model';
 
 
 @Injectable()
@@ -18,7 +18,7 @@ export class PlayersService {
     return this.apiService.getFullResponse(`/players`, params);
   }
 
-  getPlayer(id): Observable<Player> {
+  getPlayer(id): Observable<PlayerModel> {
     return this.apiService.get(`/players/${id}`);
   }
 

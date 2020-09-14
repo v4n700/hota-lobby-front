@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Player } from '../../core/models/player.model';
+import { PlayerModel } from '../../core/models/player.model';
 import { ActivatedRoute } from '@angular/router';
 import { PlayersService } from '../../core/services/players.service';
+import { GetPlayerByIdUsecase } from '../../core/usecases/get-player-by-id.usecase';
 
 @Component({
   selector: 'hota-profile-info',
@@ -9,13 +10,14 @@ import { PlayersService } from '../../core/services/players.service';
   styleUrls: ['./profile-info.component.scss']
 })
 export class ProfileInfoComponent implements OnInit {
-  id: string;
-  player: Player;
+  id: number;
+  player: PlayerModel;
   loading = true;
 
   constructor(
     private route: ActivatedRoute,
-    private playersService: PlayersService
+    private playersService: PlayersService,
+    private getPlayerById: GetPlayerByIdUsecase
   ) { }
 
   ngOnInit(): void {
@@ -24,11 +26,10 @@ export class ProfileInfoComponent implements OnInit {
   }
 
   getPlayerProfileData(id): void {
-    this.playersService.getPlayer(id)
-      .subscribe((playerData: Player) => {
-        this.player = playerData;
-        this.loading = false;
-      });
+    this.getPlayerById.execute(this.id).subscribe((playerData: PlayerModel) => {
+      this.player = playerData;
+      this.loading = false;
+    });
   }
 
 }
