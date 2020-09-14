@@ -1,17 +1,17 @@
 import { Mapper } from '../../../core/base/mapper';
-import { PlayersResponseWebEntity } from './players-response-web-entity';
 import { PlayersResponseModel } from '../../../core/models/players-response.model';
-import {flatMap} from 'rxjs/operators';
+import {HttpResponse} from '@angular/common/http';
+import {PlayerWebEntity} from './player-web-entity';
 
-export class PlayersResponseWebRepositoryMapper implements Mapper<PlayersResponseWebEntity, PlayersResponseModel>{
-  mapFrom(param: PlayersResponseWebEntity): PlayersResponseModel {
+export class PlayersResponseWebRepositoryMapper implements Mapper<HttpResponse<PlayerWebEntity[]>, PlayersResponseModel>{
+  mapFrom(param: HttpResponse<PlayerWebEntity[]>): PlayersResponseModel {
     return {
       totalCount: Number(param.headers.get('X-Total-Count')),
       players: param.body
     };
   }
 
-  mapTo(param: PlayersResponseModel): PlayersResponseWebEntity {
+  mapTo(param: PlayersResponseModel): HttpResponse<PlayerWebEntity[]> {
     return undefined;
   }
 }

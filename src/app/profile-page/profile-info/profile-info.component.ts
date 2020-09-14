@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PlayerModel } from '../../core/models/player.model';
 import { ActivatedRoute } from '@angular/router';
-import { PlayersService } from '../../core/services/players.service';
 import { GetPlayerByIdUsecase } from '../../core/usecases/get-player-by-id.usecase';
 
 @Component({
@@ -16,7 +15,6 @@ export class ProfileInfoComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private playersService: PlayersService,
     private getPlayerById: GetPlayerByIdUsecase
   ) { }
 
