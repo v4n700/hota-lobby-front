@@ -61,13 +61,13 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
   }
 
   ngOnChanges(): void {
-    if (this.dateRange.start && this.dateRange.end) {
+    if (this.id && this.dateRange.start && this.dateRange.end) {
       this.switchStatisticsByType(this.statisticsType);
     }
   }
 
   formatDate(date: Date): string {
-    return new Date(date).toDateString();
+    return date.toDateString();
   }
 
   setChartSeries(categories: string[], series: ChartSeriesView[]): void {
@@ -124,31 +124,31 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
         .subscribe(normalized => {
           const series: ChartSeriesView[] = [];
 
-          if (normalized[0].data.length > 0) {
+          if (normalized.series[0].data.length > 0) {
             series.push({
               name: 'Rating',
               color: '#3f51b5',
-              data: normalized[0].data,
+              data: normalized.series[0].data,
             });
           }
 
-          if (normalized[2].data.length > 0) {
-            series.push({
-              name: 'Reputation',
-              color: '#2e8c31',
-              data: normalized[2].data,
-            });
-          }
-
-          if (normalized[1].data.length > 0) {
+          if (normalized.series[1].data.length > 0) {
             series.push({
               name: 'Hours',
               color: '#9c1446',
-              data: normalized[1].data,
+              data: normalized.series[1].data,
             });
           }
 
-          this.setChartSeries(normalized[0].timeStamps.map(item => this.formatDate(item)), series);
+          if (normalized.series[2].data.length > 0) {
+            series.push({
+              name: 'Reputation',
+              color: '#2e8c31',
+              data: normalized.series[2].data,
+            });
+          }
+
+          this.setChartSeries(normalized.dates.map(item => this.formatDate(item)), series);
         });
     });
   }

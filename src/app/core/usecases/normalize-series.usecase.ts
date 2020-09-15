@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { timestamp } from 'rxjs/operators';
 import { UseCase } from '../base/use-case';
-import {SeriesModel} from '../models/series.model';
+import { SeriesModel } from '../models/series.model';
+import { NormalizeSeriesResponse } from './normalize-series-response';
 
 @Injectable({
   providedIn: 'root'
 })
-export class NormalizeSeriesUsecase implements UseCase<SeriesModel[], SeriesModel[]> {
+export class NormalizeSeriesUsecase implements UseCase<SeriesModel[], NormalizeSeriesResponse> {
 
   private getValueAtTime(time: Date, series: SeriesModel, initial = 0): number {
     if (series.data.length === 0) {
@@ -28,7 +28,7 @@ export class NormalizeSeriesUsecase implements UseCase<SeriesModel[], SeriesMode
     return series.data[series.data.length - 1];
   }
 
-  execute(params: SeriesModel[]): Observable<SeriesModel[]> {
+  execute(params: SeriesModel[]): Observable<NormalizeSeriesResponse> {
     const allDates = params.reduce((acc, val) => acc.concat(val.timeStamps), []);
     const allTimestamps = allDates.map(date => new Date(date).getTime());
     const uniqueTimestamps = [...new Set(allTimestamps)];
@@ -36,9 +36,9 @@ export class NormalizeSeriesUsecase implements UseCase<SeriesModel[], SeriesMode
     const uniqueDates = uniqueTimestamps.map(t => new Date(t));
 
     const result: SeriesModel[] = [];
-    for (let i = 0; i < params.length; i++)
+    for (const param of params)
     {
-      if (params[i].data.length === 0) {
+      if (param.data.length === 0) {
         result.push({
           data: [],
           timeStamps: [],
@@ -47,9 +47,9 @@ export class NormalizeSeriesUsecase implements UseCase<SeriesModel[], SeriesMode
       }
 
       const values: number[] = [];
-      for (let j = 0; j < uniqueDates.length; j++)
+      for (const uniqueDatesValue of uniqueDates)
       {
-        const value = this.getValueAtTime(uniqueDates[j], params[i]);
+        const value = this.getValueAtTime(uniqueDatesValue, param);
         values.push(value);
       }
       result.push({
@@ -58,6 +58,9 @@ export class NormalizeSeriesUsecase implements UseCase<SeriesModel[], SeriesMode
       });
     }
 
-    return of(result);
+    return of({
+      dates: uniqueDates,
+      series: result,
+    });
   }
 }

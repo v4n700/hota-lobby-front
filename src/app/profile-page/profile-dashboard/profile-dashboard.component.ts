@@ -1,6 +1,5 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import {MatDateRangePickerInput} from '@angular/material/datepicker/date-range-picker';
 
 @Component({
   selector: 'hota-profile-dashboard',
@@ -8,13 +7,19 @@ import {MatDateRangePickerInput} from '@angular/material/datepicker/date-range-p
   styleUrls: ['./profile-dashboard.component.scss']
 })
 export class ProfileDashboardComponent {
-  public chartsAmount = 1;
+
+  constructor() {}
+  public chartsAmount = 2;
+  public gridColumns = 2;
 
   dateIntervalFormGroup = new FormGroup({
     start: new FormControl(null),
     end: new FormControl(null)
   });
 
-  constructor() {}
+  public setChartsAmount(amount: number): void {
+    this.chartsAmount = amount;
+    this.gridColumns = this.chartsAmount >= 2 ? 2 : 1;
+  }
 
 }
