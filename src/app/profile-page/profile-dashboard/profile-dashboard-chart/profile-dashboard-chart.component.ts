@@ -127,7 +127,7 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
           if (normalized[0].data.length > 0) {
             series.push({
               name: 'Rating',
-              color: '#0000FF',
+              color: '#3f51b5',
               data: normalized[0].data,
             });
           }
@@ -135,7 +135,7 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
           if (normalized[2].data.length > 0) {
             series.push({
               name: 'Reputation',
-              color: '#FF0000',
+              color: '#2e8c31',
               data: normalized[2].data,
             });
           }
@@ -143,7 +143,7 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
           if (normalized[1].data.length > 0) {
             series.push({
               name: 'Hours',
-              color: '#00FF00',
+              color: '#9c1446',
               data: normalized[1].data,
             });
           }

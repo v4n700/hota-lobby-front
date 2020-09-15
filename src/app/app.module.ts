@@ -13,7 +13,6 @@ import { SidenavListComponent } from './shared/layout/sidenav-list/sidenav-list.
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { HeaderComponent } from './shared/layout/header/header.component';
 import { ProfileModule } from './profile-page/profile.module';
-import {ApiService} from './core/services/api.service';
 
 @NgModule({
   declarations: [
