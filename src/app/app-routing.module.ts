@@ -6,8 +6,8 @@ import { ProfileComponent } from './profile-page/profile.component';
 const routes: Routes = [
   { path: 'leaderboard', component: LeaderboardComponent },
   { path: '', redirectTo: '/leaderboard', pathMatch: 'full'},
-  { path: '**', redirectTo: '/leaderboard'},
-  { path: 'player/:id', component: ProfileComponent}
+  { path: 'player/:id', component: ProfileComponent},
+  { path: '**', redirectTo: '/leaderboard'}
 ];
 
 @NgModule({
