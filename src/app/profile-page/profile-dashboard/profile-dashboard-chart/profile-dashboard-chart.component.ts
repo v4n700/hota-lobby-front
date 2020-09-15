@@ -1,15 +1,15 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { forkJoin, Subscription, Observable } from 'rxjs';
 
-import {forkJoin} from 'rxjs';
-import {GetPlayerStatisticsRatingUsecase} from '../../../core/usecases/get-player-statistics-rating.usecase';
-import {GetPlayerStatisticsHoursUsecase} from '../../../core/usecases/get-player-statistics-hours.usecase';
-import {GetPlayerStatisticsReputationUsecase} from '../../../core/usecases/get-player-statistics-reputation.usecase';
-import {GetPlayerStatisticsCombinedUsecase} from '../../../core/usecases/get-player-statistics-combined.usecase';
-import {FilterSeriesByDaterangeUsecase} from '../../../core/usecases/filter-series-by-daterange.usecase';
-import {NormalizeSeriesUsecase} from '../../../core/usecases/normalize-series.usecase';
-import {PlayerStatisticsModelSeriesMapper} from '../../../core/models/player-statistics-model-series-mapper';
+import { GetPlayerStatisticsRatingUsecase} from '../../../core/usecases/get-player-statistics-rating.usecase';
+import { GetPlayerStatisticsHoursUsecase } from '../../../core/usecases/get-player-statistics-hours.usecase';
+import { GetPlayerStatisticsReputationUsecase } from '../../../core/usecases/get-player-statistics-reputation.usecase';
+import { GetPlayerStatisticsCombinedUsecase } from '../../../core/usecases/get-player-statistics-combined.usecase';
+import { FilterSeriesByDaterangeUsecase } from '../../../core/usecases/filter-series-by-daterange.usecase';
+import { NormalizeSeriesUsecase } from '../../../core/usecases/normalize-series.usecase';
+import { PlayerStatisticsModelSeriesMapper } from '../../../core/models/player-statistics-model-series-mapper';
 import { PlayerStatisticsCombinedModel } from 'src/app/core/models/player-statistics-combined.model';
 
 interface ChartSeriesView {
@@ -35,6 +35,10 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
   @Input()
   public dateRange: {start: Date, end: Date};
 
+  private charShouldResizeSubscription: Subscription;
+
+  @Input() charShouldResize: Observable<void>;
+
   private mapper: PlayerStatisticsModelSeriesMapper = new PlayerStatisticsModelSeriesMapper();
   private id: number;
 
@@ -55,9 +59,23 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
 
   Highcharts: typeof Highcharts = Highcharts;
 
+  fix() {
+    this.Highcharts.charts.filter(chart => chart).forEach(chart => chart.reflow());
+  }
+
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
     this.switchStatisticsByType(this.statisticsType);
+
+    this.charShouldResizeSubscription = this.charShouldResize.subscribe(() => {
+      setTimeout(() => {
+        this.fix();
+      }, 0);
+    });
+  }
+
+  ngOnDestroy() {
+    this.charShouldResizeSubscription.unsubscribe();
   }
 
   ngOnChanges(): void {

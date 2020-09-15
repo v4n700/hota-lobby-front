@@ -1,18 +1,19 @@
 import {Injectable} from '@angular/core';
-import {PlayerStatisticsRepository} from '../../../core/repositories/player-statistics.repository';
-import {PlayerStatisticsRatingModel} from '../../../core/models/player-statistics-rating.model';
-import {Observable} from 'rxjs';
-import {PlayerStatisticsRatingWebMapper} from './player-statistics-rating-web-mapper';
-import {HttpClient} from '@angular/common/http';
-import {environment} from '../../../../environments/environment';
 import { map } from 'rxjs/operators';
-import {PlayerStatisticsRatingWebEntity} from './player-statistics-rating-web-entity';
-import {PlayerStatisticsHoursModel} from '../../../core/models/player-statistics-hours.model';
-import {PlayerStatisticsHoursWebEntity} from './player-statistics-hours-web-entity';
-import {PlayerStatisticsHoursWebMapper} from './player-statistics-hours-web-mapper';
-import {PlayerStatisticsReputationModel} from '../../../core/models/player-statistics-reputation.model';
-import {PlayerStatisticsReputationWebMapper} from './player-statistics-reputation-web-mapper';
-import {PlayerStatisticsReputationWebEntity} from './player-statistics-reputation-web-entity';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+import { PlayerStatisticsRepository } from '../../../core/repositories/player-statistics.repository';
+import { PlayerStatisticsRatingModel } from '../../../core/models/player-statistics-rating.model';
+import { PlayerStatisticsRatingWebMapper } from './player-statistics-rating-web-mapper';
+import { environment } from '../../../../environments/environment';
+import { PlayerStatisticsRatingWebEntity } from './player-statistics-rating-web-entity';
+import { PlayerStatisticsHoursModel } from '../../../core/models/player-statistics-hours.model';
+import { PlayerStatisticsHoursWebEntity } from './player-statistics-hours-web-entity';
+import { PlayerStatisticsHoursWebMapper } from './player-statistics-hours-web-mapper';
+import { PlayerStatisticsReputationModel } from '../../../core/models/player-statistics-reputation.model';
+import { PlayerStatisticsReputationWebMapper } from './player-statistics-reputation-web-mapper';
+import { PlayerStatisticsReputationWebEntity } from './player-statistics-reputation-web-entity';
 
 @Injectable({
   providedIn: 'root'

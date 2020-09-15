@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import {forkJoin, Observable} from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 
 import { UseCase } from '../base/use-case';
 import { PlayerStatisticsRepository } from '../repositories/player-statistics.repository';
-import {PlayerStatisticsCombinedModel} from '../models/player-statistics-combined.model';
+import { PlayerStatisticsCombinedModel } from '../models/player-statistics-combined.model';
 
 @Injectable({
   providedIn: 'root'

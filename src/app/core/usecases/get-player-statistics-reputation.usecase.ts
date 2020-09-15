@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 
 import { UseCase } from '../base/use-case';
 import { PlayerStatisticsRepository } from '../repositories/player-statistics.repository';
-import {PlayerStatisticsReputationModel} from '../models/player-statistics-reputation.model';
+import { PlayerStatisticsReputationModel } from '../models/player-statistics-reputation.model';
 
 @Injectable({
   providedIn: 'root'

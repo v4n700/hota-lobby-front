@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'hota-profile-dashboard',
@@ -9,8 +10,10 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class ProfileDashboardComponent {
 
   constructor() {}
-  public chartsAmount = 2;
-  public gridColumns = 2;
+  public chartsAmount = 1;
+  public gridColumns = 1;
+
+  charShouldResize: Subject<void> = new Subject<void>();
 
   dateIntervalFormGroup = new FormGroup({
     start: new FormControl(null),
@@ -20,6 +23,8 @@ export class ProfileDashboardComponent {
   public setChartsAmount(amount: number): void {
     this.chartsAmount = amount;
     this.gridColumns = this.chartsAmount >= 2 ? 2 : 1;
+    this.charShouldResize.next();
   }
 
 }
+

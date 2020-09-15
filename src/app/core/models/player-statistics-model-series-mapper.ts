@@ -1,7 +1,7 @@
-import {PlayerStatisticsRatingModel} from './player-statistics-rating.model';
-import {SeriesModel} from './series.model';
-import {PlayerStatisticsHoursModel} from './player-statistics-hours.model';
-import {PlayerStatisticsReputationModel} from './player-statistics-reputation.model';
+import { PlayerStatisticsRatingModel } from './player-statistics-rating.model';
+import { SeriesModel } from './series.model';
+import { PlayerStatisticsHoursModel } from './player-statistics-hours.model';
+import { PlayerStatisticsReputationModel } from './player-statistics-reputation.model';
 
 export class PlayerStatisticsModelSeriesMapper {
   mapFromRating(rating: PlayerStatisticsRatingModel[]): SeriesModel {

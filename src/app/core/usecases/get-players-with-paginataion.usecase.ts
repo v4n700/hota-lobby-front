@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { UseCase } from '../base/use-case';
 import { PlayerRepository } from '../repositories/player.repository';
 import { PlayersResponseModel } from '../models/players-response.model';
-import {PaginationParams} from '../models/pagintation-params.model';
+import { PaginationParams } from '../models/pagintation-params.model';
 
 @Injectable({
   providedIn: 'root'

@@ -10,31 +10,31 @@
       </mat-menu>
     </div>
     <div class="datepicker-container">
-        <mat-date-range-input class="datepicker" fxHide.lt-sm fxFlex [formGroup]="dateIntervalFormGroup" [rangePicker]="picker">
-          <input class="date-input" matStartDate formControlName="start" placeholder="Start date">
-          <input class="date-input" matEndDate formControlName="end" placeholder="End date">
-        </mat-date-range-input>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker fxLayoutAlign="end" #picker></mat-date-range-picker>
+      <mat-date-range-input class="datepicker" fxHide.lt-sm fxFlex [formGroup]="dateIntervalFormGroup" [rangePicker]="picker">
+        <input class="date-input" matStartDate formControlName="start" placeholder="Start date">
+        <input class="date-input" matEndDate formControlName="end" placeholder="End date">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker fxLayoutAlign="end" #picker></mat-date-range-picker>
     </div>
     <div class="side"></div>
   </mat-toolbar-row>
 </mat-toolbar>
 <div>
-<ng-container>
-  <div fxLayout="row wrap" fxLayoutGap="16px grid">
-    <div [fxFlex]="(100/gridColumns) + '%'" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="chartsAmount > 0">
-      <hota-profile-dashboard-chart [dateRange]="dateIntervalFormGroup.value"></hota-profile-dashboard-chart>
+  <ng-container>
+    <div fxLayout="row wrap" fxLayoutGap="16px grid">
+      <div [fxFlex]="(100/gridColumns) + '%'" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="chartsAmount > 0">
+        <hota-profile-dashboard-chart [charShouldResize]="charShouldResize.asObservable()" [dateRange]="dateIntervalFormGroup.value"></hota-profile-dashboard-chart>
+      </div>
+      <div [fxFlex]="(100/gridColumns) + '%'" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="chartsAmount > 1">
+        <hota-profile-dashboard-chart [charShouldResize]="charShouldResize.asObservable()" [dateRange]="dateIntervalFormGroup.value"></hota-profile-dashboard-chart>
+      </div>
+      <div [fxFlex]="(100/gridColumns) + '%'" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="chartsAmount > 2">
+        <hota-profile-dashboard-chart [charShouldResize]="charShouldResize.asObservable()" [dateRange]="dateIntervalFormGroup.value"></hota-profile-dashboard-chart>
+      </div>
+      <div [fxFlex]="(100/gridColumns) + '%'" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="chartsAmount > 3">
+        <hota-profile-dashboard-chart [charShouldResize]="charShouldResize.asObservable()" [dateRange]="dateIntervalFormGroup.value"></hota-profile-dashboard-chart>
+      </div>
     </div>
-    <div [fxFlex]="(100/gridColumns) + '%'" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="chartsAmount > 1">
-      <hota-profile-dashboard-chart [dateRange]="dateIntervalFormGroup.value"></hota-profile-dashboard-chart>
-    </div>
-    <div [fxFlex]="(100/gridColumns) + '%'" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="chartsAmount > 2">
-      <hota-profile-dashboard-chart [dateRange]="dateIntervalFormGroup.value"></hota-profile-dashboard-chart>
-    </div>
-    <div [fxFlex]="(100/gridColumns) + '%'" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="chartsAmount > 3">
-      <hota-profile-dashboard-chart [dateRange]="dateIntervalFormGroup.value"></hota-profile-dashboard-chart>
-    </div>
-  </div>
-</ng-container>
+  </ng-container>
 </div>

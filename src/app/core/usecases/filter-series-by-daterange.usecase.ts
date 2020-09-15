@@ -1,9 +1,9 @@
-import {Observable, of} from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-import {UseCase} from '../base/use-case';
-import {FilterSeriesByDaterangeRequest} from './filter-series-by-daterange-request';
-import {SeriesModel} from '../models/series.model';
+import { UseCase } from '../base/use-case';
+import { FilterSeriesByDaterangeRequest } from './filter-series-by-daterange-request';
+import { SeriesModel } from '../models/series.model';
 
 interface SeriesItem {
   time: Date;

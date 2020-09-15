@@ -1,7 +1,8 @@
+import { HttpResponse } from '@angular/common/http';
+
 import { Mapper } from '../../../core/base/mapper';
 import { PlayersResponseModel } from '../../../core/models/players-response.model';
-import {HttpResponse} from '@angular/common/http';
-import {PlayerWebEntity} from './player-web-entity';
+import { PlayerWebEntity } from './player-web-entity';
 
 export class PlayersResponseWebRepositoryMapper implements Mapper<HttpResponse<PlayerWebEntity[]>, PlayersResponseModel>{
   mapFrom(param: HttpResponse<PlayerWebEntity[]>): PlayersResponseModel {

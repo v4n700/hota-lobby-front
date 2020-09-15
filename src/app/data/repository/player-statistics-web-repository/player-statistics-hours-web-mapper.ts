@@ -1,6 +1,6 @@
 import { Mapper } from '../../../core/base/mapper';
-import {PlayerStatisticsHoursWebEntity} from './player-statistics-hours-web-entity';
-import {PlayerStatisticsHoursModel} from '../../../core/models/player-statistics-hours.model';
+import { PlayerStatisticsHoursWebEntity } from './player-statistics-hours-web-entity';
+import { PlayerStatisticsHoursModel } from '../../../core/models/player-statistics-hours.model';
 
 export class PlayerStatisticsHoursWebMapper implements Mapper<PlayerStatisticsHoursWebEntity[], PlayerStatisticsHoursModel[]>{
   mapFrom(param: PlayerStatisticsHoursWebEntity[]): PlayerStatisticsHoursModel[] {

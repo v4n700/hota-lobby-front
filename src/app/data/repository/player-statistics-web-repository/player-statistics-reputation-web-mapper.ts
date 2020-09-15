@@ -1,6 +1,6 @@
 import { Mapper } from '../../../core/base/mapper';
-import {PlayerStatisticsReputationWebEntity} from './player-statistics-reputation-web-entity';
-import {PlayerStatisticsReputationModel} from '../../../core/models/player-statistics-reputation.model';
+import { PlayerStatisticsReputationWebEntity } from './player-statistics-reputation-web-entity';
+import { PlayerStatisticsReputationModel } from '../../../core/models/player-statistics-reputation.model';
 
 export class PlayerStatisticsReputationWebMapper
   implements Mapper<PlayerStatisticsReputationWebEntity[], PlayerStatisticsReputationModel[]>{
