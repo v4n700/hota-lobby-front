@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin, Subscription, Observable } from 'rxjs';
@@ -31,7 +31,7 @@ Highcharts.setOptions({
   templateUrl: './profile-dashboard-chart.component.html',
   styleUrls: ['./profile-dashboard-chart.component.scss']
 })
-export class ProfileDashboardChartComponent implements OnChanges, OnInit {
+export class ProfileDashboardChartComponent implements OnChanges, OnInit, OnDestroy {
   @Input()
   public dateRange: {start: Date, end: Date};
 
@@ -59,7 +59,7 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
 
   Highcharts: typeof Highcharts = Highcharts;
 
-  fix() {
+  reflowChart(): void {
     this.Highcharts.charts.filter(chart => chart).forEach(chart => chart.reflow());
   }
 
@@ -69,16 +69,20 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
 
     this.charShouldResizeSubscription = this.charShouldResize.subscribe(() => {
       setTimeout(() => {
-        this.fix();
+        this.reflowChart();
       }, 0);
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.charShouldResizeSubscription.unsubscribe();
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.dateRange) {
+      return;
+    }
+
     if (this.id && this.dateRange.start && this.dateRange.end) {
       this.switchStatisticsByType(this.statisticsType);
     }
