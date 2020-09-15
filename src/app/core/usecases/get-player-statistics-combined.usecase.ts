@@ -8,7 +8,7 @@ import {PlayerStatisticsCombinedModel} from '../models/player-statistics-combine
 @Injectable({
   providedIn: 'root'
 })
-export class GetPlayerStatisticsHoursUsecase implements UseCase<number, PlayerStatisticsCombinedModel> {
+export class GetPlayerStatisticsCombinedUsecase implements UseCase<number, PlayerStatisticsCombinedModel> {
 
   constructor(private playerStatisticsRepository: PlayerStatisticsRepository) {}
 

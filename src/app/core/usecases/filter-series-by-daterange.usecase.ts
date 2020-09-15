@@ -1,4 +1,5 @@
 import {Observable, of} from 'rxjs';
+import { Injectable } from '@angular/core';
 
 import {UseCase} from '../base/use-case';
 import {FilterSeriesByDaterangeRequest} from './filter-series-by-daterange-request';
@@ -9,6 +10,9 @@ interface SeriesItem {
   value: number;
 }
 
+@Injectable({
+  providedIn: 'root'
+})
 export class FilterSeriesByDaterangeUsecase implements UseCase<FilterSeriesByDaterangeRequest, SeriesModel> {
 
   private getValueAtTime(time: Date, series: SeriesModel, initial = 0): number {
@@ -18,9 +22,9 @@ export class FilterSeriesByDaterangeUsecase implements UseCase<FilterSeriesByDat
 
     let prevValue = initial;
     for (let i = 0; i < series.data.length; i++) {
-      if (time < series.timeStamps[i]) {
+      if (time.getTime() < series.timeStamps[i].getTime()) {
         return prevValue;
-      } else if (time === series.timeStamps[i]) {
+      } else if (time.getTime() === series.timeStamps[i].getTime()) {
         return series.data[i];
       }
 

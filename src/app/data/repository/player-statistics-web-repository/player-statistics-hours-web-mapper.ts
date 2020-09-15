@@ -4,7 +4,7 @@ import {PlayerStatisticsHoursModel} from '../../../core/models/player-statistics
 
 export class PlayerStatisticsHoursWebMapper implements Mapper<PlayerStatisticsHoursWebEntity[], PlayerStatisticsHoursModel[]>{
   mapFrom(param: PlayerStatisticsHoursWebEntity[]): PlayerStatisticsHoursModel[] {
-    return param.map(item => ({ hours: item.hours, time: item.time }) as PlayerStatisticsHoursModel);
+    return param.map(item => ({ hours: item.played, time: new Date(item.time) }) as PlayerStatisticsHoursModel);
   }
 
   mapTo(param: PlayerStatisticsHoursModel[]): PlayerStatisticsHoursWebEntity[] {

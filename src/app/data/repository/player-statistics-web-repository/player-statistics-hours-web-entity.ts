@@ -1,5 +1,5 @@
 export interface PlayerStatisticsHoursWebEntity {
   id: number;
-  hours: number;
+  played: number;
   time: Date;
 }

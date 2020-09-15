@@ -2,15 +2,27 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import {ActivatedRoute} from '@angular/router';
 
-import {PlayersService} from '../../../core/services/players.service';
 import {forkJoin} from 'rxjs';
 import {GetPlayerStatisticsRatingUsecase} from '../../../core/usecases/get-player-statistics-rating.usecase';
+import {GetPlayerStatisticsHoursUsecase} from '../../../core/usecases/get-player-statistics-hours.usecase';
+import {GetPlayerStatisticsReputationUsecase} from '../../../core/usecases/get-player-statistics-reputation.usecase';
+import {GetPlayerStatisticsCombinedUsecase} from '../../../core/usecases/get-player-statistics-combined.usecase';
+import {FilterSeriesByDaterangeUsecase} from '../../../core/usecases/filter-series-by-daterange.usecase';
+import {NormalizeSeriesUsecase} from '../../../core/usecases/normalize-series.usecase';
+import {PlayerStatisticsModelSeriesMapper} from '../../../core/models/player-statistics-model-series-mapper';
+import { PlayerStatisticsCombinedModel } from 'src/app/core/models/player-statistics-combined.model';
+
+interface ChartSeriesView {
+  name: string;
+  color: string;
+  data: number[];
+}
 
 Highcharts.setOptions({
   title: {
     style: {
       color: '#3f51b5'
-    }
+    },
   }
 });
 
@@ -23,127 +35,50 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
   @Input()
   public dateRange: {start: Date, end: Date};
 
-  id: string;
-  public playerStatsData: number[] = [];
-  public timeStamps: string[] = [];
+  private mapper: PlayerStatisticsModelSeriesMapper = new PlayerStatisticsModelSeriesMapper();
+  private id: number;
 
   constructor(
-    private playersService: PlayersService,
     private route: ActivatedRoute,
-    private getPlayerStatisticsUC: GetPlayerStatisticsRatingUsecase
+    private getPlayerStatisticsRatingUsecase: GetPlayerStatisticsRatingUsecase,
+    private getPlayerStatisticsHoursUsecase: GetPlayerStatisticsHoursUsecase,
+    private getPlayerStatisticsReputationUsecase: GetPlayerStatisticsReputationUsecase,
+    private getPlayerStatisticsCombinedUsecase: GetPlayerStatisticsCombinedUsecase,
+    private filterSeriesByDaterangeUsecase: FilterSeriesByDaterangeUsecase,
+    private normalizeSeriesUsecase: NormalizeSeriesUsecase,
   ) { }
 
   public updateChartFlag = false;
-  public currentChartType = 'line';
-  public chartData: Series[] = [
-    {
-      name: 'Rating',
-      data: this.playerStatsData,
-      color: '#3f51b5'
-    }
-  ];
+  public statisticsType = 'Rating';
+  public chartType = 'line';
+  public chartOptions: any = {};
 
   Highcharts: typeof Highcharts = Highcharts;
-  public chartOptions;
-
-  public switchSeriesDisplayMode(type: string): void {
-    if (this.currentChartType !== type) {
-      this.currentChartType = type;
-      this.chartOptions.chart.type = type;
-    }
-
-    this.updateChartFlag = true;
-  }
-
-  public switchSeriesColor({ target }): void {
-    if (target.textContent === 'Primary') {
-      this.chartOptions.series.map((data: Series) => (data.color = '#3f51b5'));
-    } else {
-      this.chartOptions.series.map((data: Series) => (data.color = target.textContent));
-    }
-
-    this.updateChartFlag = true;
-  }
-
-  public formatDate(date): string {
-    return date.split('T')[0];
-  }
-
-  public getCleanChartData(playerData, statsName): number[] {
-    let filteredData = playerData;
-
-    if (this.dateRange.start != null) {
-      filteredData = playerData.filter(data => data.time >= this.dateRange.start.toISOString());
-    }
-
-    if (this.dateRange.end != null) {
-      const dateEnd = new Date(this.dateRange.end);
-      dateEnd.setDate(this.dateRange.end.getDate() + 1);
-
-      filteredData = filteredData.filter(data => data.time <= dateEnd.toISOString());
-    }
-
-    this.timeStamps = filteredData.map(({time}) => this.formatDate(time));
-
-    switch (statsName) {
-      case 'ratings':
-        return filteredData.map((obj) => obj.rating);
-      case 'reputations':
-        return filteredData.map((obj) => obj.reputation);
-      case 'hours':
-        return filteredData.map((obj) => obj.played);
-    }
-  }
-
-  public getPlayerStatistics(id, stats): any {
-    this.playersService.getPlayerStatistics(id, stats)
-      .subscribe((playerStats) => {
-        this.rawPlayerData = playerStats;
-        this.playerStatsData = this.getCleanChartData(this.rawPlayerData, stats);
-        this.update();
-      });
-  }
-
-  public setStatisticsMode({ target }): void {
-    switch (target.textContent) {
-      case 'Rating':
-        this.clearChartData();
-        this.chartData[0].name = 'Rating';
-        this.getPlayerStatistics(this.id, 'ratings');
-        break;
-      case 'Reputation':
-        this.clearChartData();
-        this.chartData[0].name = 'Reputation';
-        this.getPlayerStatistics(this.id, 'reputations');
-        break;
-      case 'Hours':
-        this.clearChartData();
-        this.chartData[0].name = 'Hours';
-        this.getPlayerStatistics(this.id, 'hours');
-        break;
-      case 'Combined':
-        this.getCombinedStatistics();
-        break;
-    }
-    this.updateChartFlag = true;
-  }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
-    this.chartData[0].name = 'Rating';
-    this.getPlayerStatistics(this.id, 'ratings');
+    this.switchStatisticsByType(this.statisticsType);
   }
 
-  private update(): void {
-    this.chartData.map((value) => (value.data = this.playerStatsData));
+  ngOnChanges(): void {
+    if (this.dateRange.start && this.dateRange.end) {
+      this.switchStatisticsByType(this.statisticsType);
+    }
+  }
+
+  formatDate(date: Date): string {
+    return new Date(date).toDateString();
+  }
+
+  setChartSeries(categories: string[], series: ChartSeriesView[]): void {
     this.chartOptions = {
       title: {text: 'Player statistics'},
       chart: {
-        type: this.currentChartType
+        type: this.chartType,
       },
       xAxis: {
         type: 'datetime',
-        categories: this.timeStamps
+        categories,
       },
       yAxis: {
         min: 0,
@@ -151,51 +86,133 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit {
           text: 'value'
         }
       },
-      series: this.chartData
+      series,
     };
-
     this.updateChartFlag = true;
   }
 
-  ngOnChanges(): void {
-    this.playerStatsData = this.getCleanChartData(this.rawPlayerData, 'ratings');
-    this.update();
-  }
+  setStatistics(combinedStatistics: PlayerStatisticsCombinedModel): void {
+    const ratingSeries = this.mapper.mapFromRating(combinedStatistics.rating);
+    const hoursSeries = this.mapper.mapFromHours(combinedStatistics.hours);
+    const reputationSeries = this.mapper.mapFromReputation(combinedStatistics.reputation);
 
-  public getCombinedStatistics(): void {
+    const dates = [...ratingSeries.timeStamps, ...hoursSeries.timeStamps, ...reputationSeries.timeStamps];
+    const min = dates.reduce((a, b) => a < b ? a : b);
+    const max = dates.reduce((a, b) => a > b ? a : b);
+
+    const start = this.dateRange.start ? this.dateRange.start : min;
+    const end = this.dateRange.end ? this.dateRange.end : max;
+
     forkJoin({
-      stats1: this.playersService.getPlayerStatistics(this.id, 'ratings'),
-      stats2: this.playersService.getPlayerStatistics(this.id, 'reputations'),
-      stats3: this.playersService.getPlayerStatistics(this.id, 'hours')
-    }).subscribe( data => {
-      this.combineStatistics(data);
+      rating: this.filterSeriesByDaterangeUsecase.execute({
+        dateFrom: start,
+        dateTo: end,
+        series: ratingSeries,
+      }),
+      hours: this.filterSeriesByDaterangeUsecase.execute({
+        dateFrom: start,
+        dateTo: end,
+        series: hoursSeries,
+      }),
+      reputation: this.filterSeriesByDaterangeUsecase.execute({
+        dateFrom: start,
+        dateTo: end,
+        series: reputationSeries,
+      }),
+    }).subscribe(data => {
+      this.normalizeSeriesUsecase.execute([data.rating, data.hours, data.reputation])
+        .subscribe(normalized => {
+          const series: ChartSeriesView[] = [];
+
+          if (normalized[0].data.length > 0) {
+            series.push({
+              name: 'Rating',
+              color: '#0000FF',
+              data: normalized[0].data,
+            });
+          }
+
+          if (normalized[2].data.length > 0) {
+            series.push({
+              name: 'Reputation',
+              color: '#FF0000',
+              data: normalized[2].data,
+            });
+          }
+
+          if (normalized[1].data.length > 0) {
+            series.push({
+              name: 'Hours',
+              color: '#00FF00',
+              data: normalized[1].data,
+            });
+          }
+
+          this.setChartSeries(normalized[0].timeStamps.map(item => this.formatDate(item)), series);
+        });
     });
   }
 
-  public clearChartData(): void {
-    while (this.chartData.length > 1) {
-      this.chartData.pop();
+  switchSeriesDisplayMode(type: string): void {
+    this.chartType = type;
+    this.chartOptions.chart.type = type;
+    this.updateChartFlag = true;
+  }
+
+  switchSeriesColor({ target }): void {
+    if (target.textContent === 'Primary') {
+      this.chartOptions.series.map((data: ChartSeriesView) => (data.color = '#3f51b5'));
+    } else {
+      this.chartOptions.series.map((data: ChartSeriesView) => (data.color = target.textContent));
+    }
+
+    this.updateChartFlag = true;
+  }
+
+  switchStatisticsByType(statistics: string): void {
+    this.statisticsType = statistics;
+
+    switch (statistics) {
+      case 'Rating':
+        this.getPlayerStatisticsRatingUsecase.execute(this.id)
+          .subscribe(data => {
+            this.setStatistics({
+              rating: data,
+              reputation: [],
+              hours: [],
+            });
+          });
+        break;
+      case 'Reputation':
+        this.getPlayerStatisticsReputationUsecase.execute(this.id)
+          .subscribe(data => {
+            this.setStatistics({
+              rating: [],
+              reputation: data,
+              hours: [],
+            });
+          });
+        break;
+      case 'Hours':
+        this.getPlayerStatisticsHoursUsecase.execute(this.id)
+          .subscribe(data => {
+            this.setStatistics({
+              rating: [],
+              reputation: [],
+              hours: data,
+            });
+          });
+        break;
+      case 'Combined':
+        this.getPlayerStatisticsCombinedUsecase.execute(this.id)
+          .subscribe(data => {
+            this.setStatistics(data);
+          });
+        break;
     }
   }
 
-  public combineStatistics(data): void {
-    this.chartData.length = 0;
-    this.chartData.push({
-        name: 'Rating',
-        data: this.getCleanChartData(data.stats1, 'ratings'),
-        color: '#3f51b5'
-      },
-      {
-        name: 'Reputation',
-        data: this.getCleanChartData(data.stats2, 'reputations'),
-        color: '#2e8c31'
-      },
-      {
-        name: 'Hours',
-        data: this.getCleanChartData(data.stats3, 'hours'),
-        color: '#9c1446'
-      });
-
-    this.updateChartFlag = true;
+  setStatisticsMode({ target }): void {
+    this.switchStatisticsByType(target.textContent);
   }
 }

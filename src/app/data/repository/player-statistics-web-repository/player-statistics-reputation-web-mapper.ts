@@ -6,7 +6,7 @@ export class PlayerStatisticsReputationWebMapper
   implements Mapper<PlayerStatisticsReputationWebEntity[], PlayerStatisticsReputationModel[]>{
 
   mapFrom(param: PlayerStatisticsReputationWebEntity[]): PlayerStatisticsReputationModel[] {
-    return param.map(item => ({ reputation: item.reputation, time: item.time }) as PlayerStatisticsReputationModel);
+    return param.map(item => ({ reputation: item.reputation, time: new Date(item.time) }) as PlayerStatisticsReputationModel);
   }
 
   mapTo(param: PlayerStatisticsReputationModel[]): PlayerStatisticsReputationWebEntity[] {
