@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api_url: 'https://hota-lobby-test-api.herokuapp.com/api'
+  api_url: 'https://hota-lobby-test-api.herokuapp.com/api',
 };
 
 /*

@@ -5,5 +5,7 @@ import { PaginationParams } from '../models/pagintation-params.model';
 
 export abstract class PlayerRepository {
   abstract getPlayerById(id: number): Observable<PlayerModel>;
-  abstract getPlayersWithPagination(params: PaginationParams): Observable<PlayersResponseModel>;
+  abstract getPlayersWithPagination(
+    params: PaginationParams
+  ): Observable<PlayersResponseModel>;
 }

@@ -6,12 +6,13 @@ describe('LeaderboardComponent', () => {
   let component: LeaderboardComponent;
   let fixture: ComponentFixture<LeaderboardComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ LeaderboardComponent ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [LeaderboardComponent],
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LeaderboardComponent);

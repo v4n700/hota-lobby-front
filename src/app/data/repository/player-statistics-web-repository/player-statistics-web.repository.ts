@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -16,35 +16,40 @@ import { PlayerStatisticsReputationWebMapper } from './player-statistics-reputat
 import { PlayerStatisticsReputationWebEntity } from './player-statistics-reputation-web-entity';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlayerStatisticsWebRepository extends PlayerStatisticsRepository {
-
   playerRatingStatsMapper = new PlayerStatisticsRatingWebMapper();
   playerHoursStatsMapper = new PlayerStatisticsHoursWebMapper();
   playerReputationStatsMapper = new PlayerStatisticsReputationWebMapper();
 
-  constructor(
-    private http: HttpClient
-  ) {
+  constructor(private http: HttpClient) {
     super();
   }
 
   getPlayerRatingStats(id: number): Observable<PlayerStatisticsRatingModel[]> {
     return this.http
-      .get<PlayerStatisticsRatingWebEntity[]>(`${environment.api_url}/players/${id}/ratings`)
+      .get<PlayerStatisticsRatingWebEntity[]>(
+        `${environment.api_url}/players/${id}/ratings`
+      )
       .pipe(map(this.playerRatingStatsMapper.mapFrom));
   }
 
   getPlayerHoursStats(id: number): Observable<PlayerStatisticsHoursModel[]> {
     return this.http
-      .get<PlayerStatisticsHoursWebEntity[]>(`${environment.api_url}/players/${id}/hours`)
+      .get<PlayerStatisticsHoursWebEntity[]>(
+        `${environment.api_url}/players/${id}/hours`
+      )
       .pipe(map(this.playerHoursStatsMapper.mapFrom));
   }
 
-  getPlayerReputationStats(id: number): Observable<PlayerStatisticsReputationModel[]> {
+  getPlayerReputationStats(
+    id: number
+  ): Observable<PlayerStatisticsReputationModel[]> {
     return this.http
-      .get<PlayerStatisticsReputationWebEntity[]>(`${environment.api_url}/players/${id}/reputations`)
+      .get<PlayerStatisticsReputationWebEntity[]>(
+        `${environment.api_url}/players/${id}/reputations`
+      )
       .pipe(map(this.playerReputationStatsMapper.mapFrom));
   }
 }

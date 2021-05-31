@@ -11,10 +11,11 @@ interface SeriesItem {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class FilterSeriesByDaterangeUsecase implements UseCase<FilterSeriesByDaterangeRequest, SeriesModel> {
-
+export class FilterSeriesByDaterangeUsecase
+  implements UseCase<FilterSeriesByDaterangeRequest, SeriesModel>
+{
   private getValueAtTime(time: Date, series: SeriesModel, initial = 0): number {
     if (series.data.length === 0) {
       return initial;
@@ -34,18 +35,24 @@ export class FilterSeriesByDaterangeUsecase implements UseCase<FilterSeriesByDat
     return series.data[series.data.length - 1];
   }
 
-  private filterByDateRange(from: Date, to: Date, series: SeriesModel): SeriesModel {
+  private filterByDateRange(
+    from: Date,
+    to: Date,
+    series: SeriesModel
+  ): SeriesModel {
     if (series.data.length === 0) {
-      return { data: [], timeStamps: []};
+      return { data: [], timeStamps: [] };
     }
 
     const seriesItems: SeriesItem[] = [];
 
     for (let i = 0; i < series.data.length; i++) {
-      seriesItems[i] = {value: series.data[i], time: series.timeStamps[i]};
+      seriesItems[i] = { value: series.data[i], time: series.timeStamps[i] };
     }
 
-    const dataInInterval = seriesItems.filter(item => from <= item.time && item.time <= to);
+    const dataInInterval = seriesItems.filter(
+      (item) => from <= item.time && item.time <= to
+    );
 
     const leftmostDataItem = {
       value: this.getValueAtTime(from, series),
@@ -70,19 +77,24 @@ export class FilterSeriesByDaterangeUsecase implements UseCase<FilterSeriesByDat
 
     const actuallyData = [];
     for (let i = 1; i < actuallyDataWithPossibleDuplicates.length; i++) {
-      if (actuallyDataWithPossibleDuplicates[i].time !== actuallyDataWithPossibleDuplicates[i - 1].time) {
+      if (
+        actuallyDataWithPossibleDuplicates[i].time !==
+        actuallyDataWithPossibleDuplicates[i - 1].time
+      ) {
         actuallyData.push(actuallyDataWithPossibleDuplicates[i]);
       }
     }
 
     const resultSeries: SeriesModel = { data: [], timeStamps: [] };
-    resultSeries.data.push(...actuallyData.map(item => item.value));
-    resultSeries.timeStamps.push(...actuallyData.map(item => item.time));
+    resultSeries.data.push(...actuallyData.map((item) => item.value));
+    resultSeries.timeStamps.push(...actuallyData.map((item) => item.time));
 
     return resultSeries;
   }
 
   execute(params: FilterSeriesByDaterangeRequest): Observable<SeriesModel> {
-    return of(this.filterByDateRange(params.dateFrom, params.dateTo, params.series));
+    return of(
+      this.filterByDateRange(params.dateFrom, params.dateTo, params.series)
+    );
   }
 }

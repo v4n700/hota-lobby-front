@@ -1,9 +1,16 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin, Subscription, Observable } from 'rxjs';
 
-import { GetPlayerStatisticsRatingUsecase} from '../../../core/usecases/get-player-statistics-rating.usecase';
+import { GetPlayerStatisticsRatingUsecase } from '../../../core/usecases/get-player-statistics-rating.usecase';
 import { GetPlayerStatisticsHoursUsecase } from '../../../core/usecases/get-player-statistics-hours.usecase';
 import { GetPlayerStatisticsReputationUsecase } from '../../../core/usecases/get-player-statistics-reputation.usecase';
 import { GetPlayerStatisticsCombinedUsecase } from '../../../core/usecases/get-player-statistics-combined.usecase';
@@ -22,25 +29,28 @@ interface ChartSeriesView {
 Highcharts.setOptions({
   title: {
     style: {
-      color: '#3f51b5'
+      color: '#3f51b5',
     },
-  }
+  },
 });
 
 @Component({
   selector: 'hota-profile-dashboard-chart',
   templateUrl: './profile-dashboard-chart.component.html',
-  styleUrls: ['./profile-dashboard-chart.component.scss']
+  styleUrls: ['./profile-dashboard-chart.component.scss'],
 })
-export class ProfileDashboardChartComponent implements OnChanges, OnInit, OnDestroy {
+export class ProfileDashboardChartComponent
+  implements OnChanges, OnInit, OnDestroy
+{
   @Input()
-  public dateRange: {start: Date, end: Date};
+  public dateRange: { start: Date; end: Date };
 
   private charShouldResizeSubscription: Subscription;
 
   @Input() charShouldResize: Observable<void>;
 
-  private mapper: PlayerStatisticsModelSeriesMapper = new PlayerStatisticsModelSeriesMapper();
+  private mapper: PlayerStatisticsModelSeriesMapper =
+    new PlayerStatisticsModelSeriesMapper();
   private id: number;
 
   constructor(
@@ -50,8 +60,8 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit, OnDest
     private getPlayerStatisticsReputationUsecase: GetPlayerStatisticsReputationUsecase,
     private getPlayerStatisticsCombinedUsecase: GetPlayerStatisticsCombinedUsecase,
     private filterSeriesByDaterangeUsecase: FilterSeriesByDaterangeUsecase,
-    private normalizeSeriesUsecase: NormalizeSeriesUsecase,
-  ) { }
+    private normalizeSeriesUsecase: NormalizeSeriesUsecase
+  ) {}
 
   public updateChartFlag = false;
   public statisticsType = 'Rating';
@@ -61,7 +71,9 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit, OnDest
   Highcharts: typeof Highcharts = Highcharts;
 
   reflowChart(): void {
-    this.Highcharts.charts.filter(chart => chart).forEach(chart => chart.reflow());
+    this.Highcharts.charts
+      .filter((chart) => chart)
+      .forEach((chart) => chart.reflow());
   }
 
   ngOnInit(): void {
@@ -95,7 +107,7 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit, OnDest
 
   setChartSeries(categories: string[], series: ChartSeriesView[]): void {
     this.chartOptions = {
-      title: {text: 'Player statistics'},
+      title: { text: 'Player statistics' },
       chart: {
         type: this.chartType,
       },
@@ -106,8 +118,8 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit, OnDest
       yAxis: {
         min: 0,
         title: {
-          text: 'value'
-        }
+          text: 'value',
+        },
       },
       series,
     };
@@ -117,11 +129,17 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit, OnDest
   setStatistics(combinedStatistics: PlayerStatisticsCombinedModel): void {
     const ratingSeries = this.mapper.mapFromRating(combinedStatistics.rating);
     const hoursSeries = this.mapper.mapFromHours(combinedStatistics.hours);
-    const reputationSeries = this.mapper.mapFromReputation(combinedStatistics.reputation);
+    const reputationSeries = this.mapper.mapFromReputation(
+      combinedStatistics.reputation
+    );
 
-    const dates = [...ratingSeries.timeStamps, ...hoursSeries.timeStamps, ...reputationSeries.timeStamps];
-    const min = dates.reduce((a, b) => a < b ? a : b);
-    const max = dates.reduce((a, b) => a > b ? a : b);
+    const dates = [
+      ...ratingSeries.timeStamps,
+      ...hoursSeries.timeStamps,
+      ...reputationSeries.timeStamps,
+    ];
+    const min = dates.reduce((a, b) => (a < b ? a : b));
+    const max = dates.reduce((a, b) => (a > b ? a : b));
 
     const start = this.dateRange.start ? this.dateRange.start : min;
     const end = this.dateRange.end ? this.dateRange.end : max;
@@ -142,9 +160,10 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit, OnDest
         dateTo: end,
         series: reputationSeries,
       }),
-    }).subscribe(data => {
-      this.normalizeSeriesUsecase.execute([data.rating, data.hours, data.reputation])
-        .subscribe(normalized => {
+    }).subscribe((data) => {
+      this.normalizeSeriesUsecase
+        .execute([data.rating, data.hours, data.reputation])
+        .subscribe((normalized) => {
           const series: ChartSeriesView[] = [];
 
           if (normalized.series[0].data.length > 0) {
@@ -171,7 +190,10 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit, OnDest
             });
           }
 
-          this.setChartSeries(normalized.dates.map(item => this.formatDate(item)), series);
+          this.setChartSeries(
+            normalized.dates.map((item) => this.formatDate(item)),
+            series
+          );
         });
     });
   }
@@ -184,9 +206,13 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit, OnDest
 
   switchSeriesColor({ target }): void {
     if (target.textContent === 'Primary') {
-      this.chartOptions.series.map((data: ChartSeriesView) => (data.color = '#3f51b5'));
+      this.chartOptions.series.map(
+        (data: ChartSeriesView) => (data.color = '#3f51b5')
+      );
     } else {
-      this.chartOptions.series.map((data: ChartSeriesView) => (data.color = target.textContent));
+      this.chartOptions.series.map(
+        (data: ChartSeriesView) => (data.color = target.textContent)
+      );
     }
 
     this.updateChartFlag = true;
@@ -197,48 +223,60 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit, OnDest
 
     switch (statistics) {
       case 'Rating':
-        this.getPlayerStatisticsRatingUsecase.execute(this.id).pipe(
-          tap(data => {
-            this.setStatistics({
-              rating: data,
-              reputation: [],
-              hours: [],
-            });
-          }),
-          take(1),
-        ).subscribe();
+        this.getPlayerStatisticsRatingUsecase
+          .execute(this.id)
+          .pipe(
+            tap((data) => {
+              this.setStatistics({
+                rating: data,
+                reputation: [],
+                hours: [],
+              });
+            }),
+            take(1)
+          )
+          .subscribe();
         break;
       case 'Reputation':
-        this.getPlayerStatisticsReputationUsecase.execute(this.id).pipe(
-          tap(data => {
-            this.setStatistics({
-              rating: [],
-              reputation: data,
-              hours: [],
-            });
-          }),
-          take(1),
-        ).subscribe();
+        this.getPlayerStatisticsReputationUsecase
+          .execute(this.id)
+          .pipe(
+            tap((data) => {
+              this.setStatistics({
+                rating: [],
+                reputation: data,
+                hours: [],
+              });
+            }),
+            take(1)
+          )
+          .subscribe();
         break;
       case 'Hours':
-        this.getPlayerStatisticsHoursUsecase.execute(this.id).pipe(
-          tap(data => {
-            this.setStatistics({
-              rating: [],
-              reputation: [],
-              hours: data,
-            });
-          }),
-          take(1),
-        ).subscribe();
+        this.getPlayerStatisticsHoursUsecase
+          .execute(this.id)
+          .pipe(
+            tap((data) => {
+              this.setStatistics({
+                rating: [],
+                reputation: [],
+                hours: data,
+              });
+            }),
+            take(1)
+          )
+          .subscribe();
         break;
       case 'Combined':
-        this.getPlayerStatisticsCombinedUsecase.execute(this.id).pipe(
-          tap(data => {
-            this.setStatistics(data);
-          }),
-          take(1),
-        ).subscribe();
+        this.getPlayerStatisticsCombinedUsecase
+          .execute(this.id)
+          .pipe(
+            tap((data) => {
+              this.setStatistics(data);
+            }),
+            take(1)
+          )
+          .subscribe();
         break;
     }
   }

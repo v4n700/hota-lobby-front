@@ -13,16 +13,13 @@ import { PlayersResponseWebRepositoryMapper } from './players-response-web-repos
 import { PaginationParams } from '../../../core/models/pagintation-params.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlayerWebRepository extends PlayerRepository {
-
   playerMapper = new PlayerWebRepositoryMapper();
   playersResponseMapper = new PlayersResponseWebRepositoryMapper();
 
-  constructor(
-    private http: HttpClient
-  ) {
+  constructor(private http: HttpClient) {
     super();
   }
 
@@ -32,13 +29,18 @@ export class PlayerWebRepository extends PlayerRepository {
       .pipe(map(this.playerMapper.mapFrom));
   }
 
-  getPlayersWithPagination(params: PaginationParams): Observable<PlayersResponseModel> {
+  getPlayersWithPagination(
+    params: PaginationParams
+  ): Observable<PlayersResponseModel> {
     let httpParams = new HttpParams();
     httpParams = httpParams.set('offset', params.offset.toString());
     httpParams = httpParams.set('limit', params.limit.toString());
 
     return this.http
-      .get<PlayerWebEntity[]>(`${environment.api_url}/players`, {observe: 'response', params: httpParams})
+      .get<PlayerWebEntity[]>(`${environment.api_url}/players`, {
+        observe: 'response',
+        params: httpParams,
+      })
       .pipe(map(this.playersResponseMapper.mapFrom));
   }
 }

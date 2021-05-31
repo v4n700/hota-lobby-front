@@ -7,7 +7,7 @@ import { take, tap } from 'rxjs/operators';
 @Component({
   selector: 'hota-profile-info',
   templateUrl: './profile-info.component.html',
-  styleUrls: ['./profile-info.component.scss']
+  styleUrls: ['./profile-info.component.scss'],
 })
 export class ProfileInfoComponent implements OnInit {
   id: number;
@@ -17,7 +17,7 @@ export class ProfileInfoComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private getPlayerById: GetPlayerByIdUsecase
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
@@ -25,13 +25,15 @@ export class ProfileInfoComponent implements OnInit {
   }
 
   getPlayerProfileData(id): void {
-    this.getPlayerById.execute(this.id).pipe(
-      tap((playerData: PlayerModel) => {
-        this.player = playerData;
-        this.loading = false;
-    }),
-    take(1),
-    ).subscribe();
+    this.getPlayerById
+      .execute(this.id)
+      .pipe(
+        tap((playerData: PlayerModel) => {
+          this.player = playerData;
+          this.loading = false;
+        }),
+        take(1)
+      )
+      .subscribe();
   }
-
 }

@@ -6,17 +6,19 @@ import { PlayerStatisticsRepository } from '../repositories/player-statistics.re
 import { PlayerStatisticsCombinedModel } from '../models/player-statistics-combined.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class GetPlayerStatisticsCombinedUsecase implements UseCase<number, PlayerStatisticsCombinedModel> {
-
+export class GetPlayerStatisticsCombinedUsecase
+  implements UseCase<number, PlayerStatisticsCombinedModel>
+{
   constructor(private playerStatisticsRepository: PlayerStatisticsRepository) {}
 
-execute(params: number): Observable<PlayerStatisticsCombinedModel> {
-  return forkJoin({
-    rating: this.playerStatisticsRepository.getPlayerRatingStats(params),
-    hours: this.playerStatisticsRepository.getPlayerHoursStats(params),
-    reputation: this.playerStatisticsRepository.getPlayerReputationStats(params)
-  });
-}
+  execute(params: number): Observable<PlayerStatisticsCombinedModel> {
+    return forkJoin({
+      rating: this.playerStatisticsRepository.getPlayerRatingStats(params),
+      hours: this.playerStatisticsRepository.getPlayerHoursStats(params),
+      reputation:
+        this.playerStatisticsRepository.getPlayerReputationStats(params),
+    });
+  }
 }

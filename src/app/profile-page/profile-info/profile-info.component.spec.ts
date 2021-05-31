@@ -6,12 +6,13 @@ describe('ProfileInfoComponent', () => {
   let component: ProfileInfoComponent;
   let fixture: ComponentFixture<ProfileInfoComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ProfileInfoComponent ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ProfileInfoComponent],
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileInfoComponent);

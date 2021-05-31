@@ -5,10 +5,9 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'hota-profile-dashboard',
   templateUrl: './profile-dashboard.component.html',
-  styleUrls: ['./profile-dashboard.component.scss']
+  styleUrls: ['./profile-dashboard.component.scss'],
 })
 export class ProfileDashboardComponent {
-
   public chartsAmount = 1;
   public gridColumns = 1;
 
@@ -16,7 +15,7 @@ export class ProfileDashboardComponent {
 
   dateIntervalFormGroup = new FormGroup({
     start: new FormControl(null),
-    end: new FormControl(null)
+    end: new FormControl(null),
   });
 
   public setChartsAmount(amount: number): void {
@@ -24,6 +23,4 @@ export class ProfileDashboardComponent {
     this.gridColumns = this.chartsAmount >= 2 ? 2 : 1;
     this.charShouldResize.next();
   }
-
 }
-

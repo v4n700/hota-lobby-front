@@ -6,13 +6,14 @@ import { PlayerStatisticsRepository } from '../repositories/player-statistics.re
 import { PlayerStatisticsRatingModel } from '../models/player-statistics-rating.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class GetPlayerStatisticsRatingUsecase implements UseCase<number, PlayerStatisticsRatingModel[]> {
-
+export class GetPlayerStatisticsRatingUsecase
+  implements UseCase<number, PlayerStatisticsRatingModel[]>
+{
   constructor(private playerStatisticsRepository: PlayerStatisticsRepository) {}
 
-execute(params: number): Observable<PlayerStatisticsRatingModel[]> {
-  return this.playerStatisticsRepository.getPlayerRatingStats(params);
-}
+  execute(params: number): Observable<PlayerStatisticsRatingModel[]> {
+    return this.playerStatisticsRepository.getPlayerRatingStats(params);
+  }
 }

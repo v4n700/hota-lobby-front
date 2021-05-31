@@ -7,10 +7,11 @@ import { PlayersResponseModel } from '../models/players-response.model';
 import { PaginationParams } from '../models/pagintation-params.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class GetPlayersWithPaginationUsecase implements UseCase<PaginationParams, PlayersResponseModel> {
-
+export class GetPlayersWithPaginationUsecase
+  implements UseCase<PaginationParams, PlayersResponseModel>
+{
   constructor(private playerRepository: PlayerRepository) {}
 
   execute(params: PaginationParams): Observable<PlayersResponseModel> {

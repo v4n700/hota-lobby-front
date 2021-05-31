@@ -4,7 +4,13 @@ import { PlayerStatisticsHoursModel } from '../models/player-statistics-hours.mo
 import { PlayerStatisticsReputationModel } from '../models/player-statistics-reputation.model';
 
 export abstract class PlayerStatisticsRepository {
-  abstract getPlayerRatingStats(id: number): Observable<PlayerStatisticsRatingModel[]>;
-  abstract getPlayerHoursStats(id: number): Observable<PlayerStatisticsHoursModel[]>;
-  abstract getPlayerReputationStats(id: number): Observable<PlayerStatisticsReputationModel[]>;
+  abstract getPlayerRatingStats(
+    id: number
+  ): Observable<PlayerStatisticsRatingModel[]>;
+  abstract getPlayerHoursStats(
+    id: number
+  ): Observable<PlayerStatisticsHoursModel[]>;
+  abstract getPlayerReputationStats(
+    id: number
+  ): Observable<PlayerStatisticsReputationModel[]>;
 }

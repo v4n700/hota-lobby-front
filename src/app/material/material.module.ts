@@ -28,12 +28,11 @@ const material = [
   MatNativeDateModule,
   MatDatepickerModule,
   MatMenuModule,
-  MatGridListModule
+  MatGridListModule,
 ];
 
 @NgModule({
   imports: [material],
-  exports: [material]
+  exports: [material],
 })
-export class MaterialModule { }
-
+export class MaterialModule {}

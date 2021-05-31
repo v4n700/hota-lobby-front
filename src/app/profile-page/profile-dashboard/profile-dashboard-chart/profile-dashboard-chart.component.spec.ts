@@ -6,12 +6,13 @@ describe('ProfileDashboardChartComponent', () => {
   let component: ProfileDashboardChartComponent;
   let fixture: ComponentFixture<ProfileDashboardChartComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ProfileDashboardChartComponent ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ProfileDashboardChartComponent],
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileDashboardChartComponent);
