@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PlayerModel } from '../../core/models/player.model';
 import { ActivatedRoute } from '@angular/router';
 import { GetPlayerByIdUsecase } from '../../core/usecases/get-player-by-id.usecase';
+import { take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'hota-profile-info',
@@ -24,10 +25,13 @@ export class ProfileInfoComponent implements OnInit {
   }
 
   getPlayerProfileData(id): void {
-    this.getPlayerById.execute(this.id).subscribe((playerData: PlayerModel) => {
-      this.player = playerData;
-      this.loading = false;
-    });
+    this.getPlayerById.execute(this.id).pipe(
+      tap((playerData: PlayerModel) => {
+        this.player = playerData;
+        this.loading = false;
+    }),
+    take(1),
+    ).subscribe();
   }
 
 }

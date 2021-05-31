@@ -9,7 +9,6 @@ import { Subject } from 'rxjs';
 })
 export class ProfileDashboardComponent {
 
-  constructor() {}
   public chartsAmount = 1;
   public gridColumns = 1;
 

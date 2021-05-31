@@ -11,6 +11,7 @@ import { FilterSeriesByDaterangeUsecase } from '../../../core/usecases/filter-se
 import { NormalizeSeriesUsecase } from '../../../core/usecases/normalize-series.usecase';
 import { PlayerStatisticsModelSeriesMapper } from '../../../core/models/player-statistics-model-series-mapper';
 import { PlayerStatisticsCombinedModel } from 'src/app/core/models/player-statistics-combined.model';
+import { take, tap } from 'rxjs/operators';
 
 interface ChartSeriesView {
   name: string;
@@ -196,40 +197,48 @@ export class ProfileDashboardChartComponent implements OnChanges, OnInit, OnDest
 
     switch (statistics) {
       case 'Rating':
-        this.getPlayerStatisticsRatingUsecase.execute(this.id)
-          .subscribe(data => {
+        this.getPlayerStatisticsRatingUsecase.execute(this.id).pipe(
+          tap(data => {
             this.setStatistics({
               rating: data,
               reputation: [],
               hours: [],
             });
-          });
+          }),
+          take(1),
+        ).subscribe();
         break;
       case 'Reputation':
-        this.getPlayerStatisticsReputationUsecase.execute(this.id)
-          .subscribe(data => {
+        this.getPlayerStatisticsReputationUsecase.execute(this.id).pipe(
+          tap(data => {
             this.setStatistics({
               rating: [],
               reputation: data,
               hours: [],
             });
-          });
+          }),
+          take(1),
+        ).subscribe();
         break;
       case 'Hours':
-        this.getPlayerStatisticsHoursUsecase.execute(this.id)
-          .subscribe(data => {
+        this.getPlayerStatisticsHoursUsecase.execute(this.id).pipe(
+          tap(data => {
             this.setStatistics({
               rating: [],
               reputation: [],
               hours: data,
             });
-          });
+          }),
+          take(1),
+        ).subscribe();
         break;
       case 'Combined':
-        this.getPlayerStatisticsCombinedUsecase.execute(this.id)
-          .subscribe(data => {
+        this.getPlayerStatisticsCombinedUsecase.execute(this.id).pipe(
+          tap(data => {
             this.setStatistics(data);
-          });
+          }),
+          take(1),
+        ).subscribe();
         break;
     }
   }
