@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -14,6 +14,7 @@ import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { HeaderComponent } from './shared/layout/header/header.component';
 import { ProfileModule } from './profile-page/profile.module';
 import { InterceptorService } from './core/services/interceptor.service';
+import { GlobalErrorHandler } from './error-handler/global-error-handler';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { InterceptorService } from './core/services/interceptor.service';
     HighchartsChartModule,
   ],
   providers: [
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
   ],
   bootstrap: [AppComponent],

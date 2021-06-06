@@ -7,17 +7,13 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root',
 })
 export class InterceptorService implements HttpInterceptor {
   constructor(private router: Router) {}
-
-  handleError(error: HttpErrorResponse): Observable<never> {
-    return throwError(error);
-  }
 
   intercept(
     request: HttpRequest<any>,
@@ -28,15 +24,10 @@ export class InterceptorService implements HttpInterceptor {
         () => {},
         (err: any) => {
           if (err instanceof HttpErrorResponse) {
-            if (
-              err.status === 400 ||
-              err.status === 404 ||
-              err.status === 500
-            ) {
+            if (err.status === 404) {
               this.router.navigate(['/leaderboard']);
-            } else {
-              return;
             }
+            return throwError(err);
           }
         }
       )
