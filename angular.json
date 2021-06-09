@@ -123,6 +123,10 @@
               "devServerTarget": "hota-lobby-front:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
     }
